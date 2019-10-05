@@ -4,7 +4,6 @@ using Cashflowio.Infrastructure.Data;
 using Cashflowio.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -18,14 +17,14 @@ namespace Cashflowio.Tests.Integration.Web
             {
                 // Create a new service provider.
                 var serviceProvider = new ServiceCollection()
-                    .AddEntityFrameworkInMemoryDatabase()
+                    //.AddEntityFrameworkInMemoryDatabase()
                     .BuildServiceProvider();
 
                 // Add a database context (AppDbContext) using an in-memory
                 // database for testing.
                 services.AddDbContext<AppDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    //options.UseInMemoryDatabase("InMemoryDbForTesting");
                     options.UseInternalServiceProvider(serviceProvider);
                 });
 

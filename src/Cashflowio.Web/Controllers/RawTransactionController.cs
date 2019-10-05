@@ -1,6 +1,7 @@
-﻿using Cashflowio.Core;
-using Cashflowio.Core.Entities;
+﻿using System.Linq;
+using Cashflowio.Core;
 using Cashflowio.Core.Interfaces;
+using Cashflowio.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cashflowio.Web.Controllers
@@ -16,8 +17,10 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Index()
         {
-            var items = _repository.List<RawTransaction>();
-            return View(items);
+            var items =  RawTransactionReader.GetAll(
+                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.Tests\Assets\CoinKeeper.xlsx");
+
+            return View(items.Where(x => x.Date.Month == 4 && x.Date.Year == 2017));
         }
 
         public IActionResult Populate()

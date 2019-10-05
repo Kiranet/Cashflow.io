@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Cashflowio.Core</AssemblyName>
     <PackageId>Cashflowio.Core</PackageId>
   </PropertyGroup>
@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="NETStandard.Library" Version="2.0.3" />
+    <PackageReference Update="NETStandard.Library" Version="2.1" />
   </ItemGroup>
 
 </Project>

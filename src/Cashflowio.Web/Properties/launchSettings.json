@@ -3,25 +3,41 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:57678/",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:5000/",
+      "sslPort": 44300
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "http://localhost:5000/",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "44300"
       }
     },
-    "Cashflowio.Web": {
+    "dotnet run": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "http://localhost:5000/",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:57679/"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "44300"
+      }
+    },
+    // dotnet watch run must be run without the Visual Studio debugger using CTRL+F5.
+    "dotnet watch run": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "workingDirectory": "$(ProjectDir)",
+      "commandLineArgs": "watch run",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5000/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "44300"
+      }
     }
   }
 }
