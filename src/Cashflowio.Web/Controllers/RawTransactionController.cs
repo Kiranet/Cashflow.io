@@ -20,7 +20,7 @@ namespace Cashflowio.Web.Controllers
             var items =  RawTransactionReader.GetAll(
                 @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.Tests\Assets\CoinKeeper.xlsx");
 
-            return View(items.Where(x => x.Date.Month == 4 && x.Date.Year == 2017));
+            return View(items);
         }
 
         public IActionResult Populate()
