@@ -17,6 +17,7 @@ namespace Cashflowio.Infrastructure.Data
         }
 
         public DbSet<RawTransaction> RawTransactions { get; set; }
+        public DbSet<Binnacle> Binnacle { get; set; }
 
         public override int SaveChanges()
         {

@@ -1,0 +1,63 @@
+﻿@using Cashflowio.Core.Entities
+@model IEnumerable<Cashflowio.Core.Entities.RawTransaction>
+@{
+    ViewData["Title"] = "Raw Transaction List";
+}
+
+<ejs-grid id="Grid" dataSource="@Model"
+          enableHover="false" height="400" width="auto" allowSelection="false"
+          toolbar="@(new List<string> {"Search"})" allowTextWrap="true"
+          allowPaging="true" allowSorting="true" allowFiltering="true" load="onload">
+    <e-grid-pagesettings pageSize="50" pageSizes="@(new[] {"50", "100", "200", "500", "1000", "All"})"></e-grid-pagesettings>
+    <e-grid-filtersettings type="Excel"></e-grid-filtersettings>
+    <e-grid-sortsettings columns="@(new[] {new {field = "Date", direction = "Ascending"}})"></e-grid-sortsettings>
+    <e-grid-searchsettings fields="@(new[] {"Date", "Type", "Source", "Destination", "Tag", "Note", "Amount"})"></e-grid-searchsettings>
+    <e-grid-columns>
+        <e-grid-column field="@nameof(RawTransaction.Type)" headerText="•••" width="50" template="#typeTemplate" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Date)" headerText="Date" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Source)" headerText="Source" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Destination)" headerText="Source" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Tag)" headerText="Tag" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Note)" headerText="Note" width="200" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+@section Styles{
+    <style>
+        .type-icon { font-size: xx-large }
+
+        .Income::after { content: "⭰"; }
+
+        .Expense::after { content: "⭲"; }
+
+        .Transfer::after { content: "⭾"; }
+
+        .Credit::after { content: "⭹" }
+
+        .Payment::after { content: "⭷" }
+
+        .Income { color: #28a745; }
+
+        .Expense { color: #dc3545; }
+
+        .Transfer { color: #17a2b8; }
+
+        .Credit { color: #ffc107; }
+
+        .Payment { color: #007bff; }
+    </style>
+}
+
+@section Scripts{
+    <script>
+        function onload() {
+            this.columns[1].format =
+                { type: 'date', format: 'ccc dd MMM yy' };
+        }
+    </script>
+
+    <script type="text/x-jsrender" id="typeTemplate">
+            <i class="type-icon ${Type}"></i>
+    </script>
+}

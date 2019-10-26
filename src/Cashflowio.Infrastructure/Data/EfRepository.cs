@@ -33,6 +33,12 @@ namespace Cashflowio.Infrastructure.Data
             return entity;
         }
 
+        public int AddRange<T>(IEnumerable<T> entities) where T : BaseEntity
+        {
+            _dbContext.Set<T>().AddRange(entities);
+            return _dbContext.SaveChanges();
+        }
+
         public void Delete<T>(T entity) where T : BaseEntity
         {
             _dbContext.Set<T>().Remove(entity);

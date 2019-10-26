@@ -1,6 +1,7 @@
-﻿using Cashflowio.Core;
+﻿using System.Linq;
 using Cashflowio.Core.Entities;
 using Cashflowio.Core.Interfaces;
+using Cashflowio.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cashflowio.Web.Controllers
@@ -14,16 +15,32 @@ namespace Cashflowio.Web.Controllers
             _repository = repository;
         }
 
-        public IActionResult Index()
+        public IActionResult Grid()
         {
-            var items = _repository.List<RawTransaction>();
-            return View(items);
+            var transactions = _repository.List<RawTransaction>();
+
+            if (transactions.Any()) return View(transactions);
+
+            var items = RawTransactionReader.GetAll(
+                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.Tests\Assets\CoinKeeper.xlsx");
+
+            _repository.AddRange(items);
+
+            return View(_repository.List<RawTransaction>());
         }
 
-        public IActionResult Populate()
+        public IActionResult Pivot()
         {
-            int recordsAdded = DatabasePopulator.PopulateDatabase(_repository);
-            return Ok(recordsAdded);
+            var transactions = _repository.List<RawTransaction>();
+
+            if (transactions.Any()) return View(transactions);
+
+            var items = RawTransactionReader.GetAll(
+                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.Tests\Assets\CoinKeeper.xlsx");
+
+            _repository.AddRange(items);
+
+            return View(_repository.List<RawTransaction>());
         }
     }
 }

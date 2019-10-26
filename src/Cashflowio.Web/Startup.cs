@@ -5,14 +5,13 @@ using Autofac.Extensions.DependencyInjection;
 using Cashflowio.Core.SharedKernel;
 using Cashflowio.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace Cashflowio.Web
 {
@@ -29,24 +28,19 @@ namespace Cashflowio.Web
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            string dbName = Guid.NewGuid().ToString();
             services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase(dbName));
-            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc()
+            services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddControllersAsServices()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .AddRazorRuntimeCompilation()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-            });
+            //services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "My API", Version = "v1"}); });
 
             return BuildDependencyInjectionProvider(services);
         }
@@ -55,7 +49,6 @@ namespace Cashflowio.Web
         {
             var builder = new ContainerBuilder();
 
-            // Populate the container using the service collection
             builder.Populate(services);
 
             Assembly webAssembly = Assembly.GetExecutingAssembly();
@@ -67,10 +60,10 @@ namespace Cashflowio.Web
             return new AutofacServiceProvider(applicationContainer);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
+                "MTUyNzI4QDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9;MTUyNzI5QDMxMzcyZTMzMmUzMGN6NWE0S0tDNDV2MU0zTmdzbEVwdzZTOWFXS0NSN0NERnZPQjN5bERjSGM9;MTUyNzMwQDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9");
 
             if (env.IsDevelopment())
             {
@@ -78,7 +71,7 @@ namespace Cashflowio.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -87,19 +80,16 @@ namespace Cashflowio.Web
             app.UseCookiePolicy();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            //app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            //app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=RawTransaction}/{action=Index}/{id?}");
             });
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Cashflowio.Core.Entities;
 using OfficeOpenXml;
@@ -64,6 +65,10 @@ namespace Cashflowio.Infrastructure.Data
 
     public static class ExcelWorksheetExtensions
     {
+        private const string DateFormat = "M/dd/yyy";
+        private const DateTimeStyles DateTimeStyle = DateTimeStyles.None;
+        private static readonly CultureInfo Provider = new CultureInfo("en-US");
+
         public static string GetString(this ExcelWorksheet worksheet, int row, CoinkeeperColumn column)
         {
             return worksheet.Cells[row, (int) column].Value?.ToString() ?? string.Empty;
@@ -77,7 +82,13 @@ namespace Cashflowio.Infrastructure.Data
 
         public static DateTime GetDate(this ExcelWorksheet worksheet, int row, CoinkeeperColumn column)
         {
-            DateTime.TryParse(worksheet.GetString(row, column), out var result);
+            var str = worksheet.GetString(row, column).Trim().Split(" ")[0];
+
+            if (str.StartsWith("0"))
+                str = str.Substring(1);
+
+            DateTime.TryParse(str, Provider, DateTimeStyle, out var result);
+
             return result;
         }
     }
