@@ -37,6 +37,7 @@ namespace Cashflowio.Web
 
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddControllersAsServices()
+                .AddRazorRuntimeCompilation()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             //services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "My API", Version = "v1"}); });
@@ -61,7 +62,8 @@ namespace Cashflowio.Web
 
         public void Configure(IApplicationBuilder app, IHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTUyNzI4QDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9;MTUyNzI5QDMxMzcyZTMzMmUzMGN6NWE0S0tDNDV2MU0zTmdzbEVwdzZTOWFXS0NSN0NERnZPQjN5bERjSGM9;MTUyNzMwQDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
+                "MTUyNzI4QDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9;MTUyNzI5QDMxMzcyZTMzMmUzMGN6NWE0S0tDNDV2MU0zTmdzbEVwdzZTOWFXS0NSN0NERnZPQjN5bERjSGM9;MTUyNzMwQDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9");
 
             if (env.IsDevelopment())
             {
