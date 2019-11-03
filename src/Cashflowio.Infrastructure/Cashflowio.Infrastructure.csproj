@@ -4,6 +4,10 @@
     <AssemblyName>Cashflowio.Infrastructure</AssemblyName>
     <PackageId>Cashflowio.Infrastructure</PackageId>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\20191103182039_Avatars.Description.cs" />
+    <Compile Remove="Migrations\20191103182039_Avatars.Description.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
