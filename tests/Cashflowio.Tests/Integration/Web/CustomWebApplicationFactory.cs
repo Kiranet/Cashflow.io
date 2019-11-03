@@ -1,5 +1,4 @@
 ﻿using System;
-using Cashflowio.Core.Interfaces;
 using Cashflowio.Infrastructure.Data;
 using Cashflowio.Web;
 using Microsoft.AspNetCore.Hosting;
@@ -27,8 +26,6 @@ namespace Cashflowio.Tests.Integration.Web
                     //options.UseInMemoryDatabase("InMemoryDbForTesting");
                     options.UseInternalServiceProvider(serviceProvider);
                 });
-
-                services.AddScoped<IDomainEventDispatcher, NoOpDomainEventDispatcher>();
 
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();

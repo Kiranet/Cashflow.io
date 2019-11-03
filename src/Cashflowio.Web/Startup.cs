@@ -89,7 +89,7 @@ namespace Cashflowio.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=RawTransaction}/{action=Index}/{id?}");
+                    template: "{controller=RawTransaction}/{action=Grid}/{id?}");
             });
         }
     }
