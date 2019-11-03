@@ -1,0 +1,28 @@
+﻿@using Cashflowio.Core.Entities
+@model IEnumerable<Cashflowio.Core.Entities.ExchangeRate>
+@{
+    ViewData["Title"] = "Exchange Rate";
+}
+
+<ejs-grid id="Grid" load="onload" toolbar="@(new List<string> {"Add", "Edit", "Delete"})" allowPaging="true">
+    <e-data-manager adaptor="UrlAdaptor" url="@Url.Action("DataSource")"
+                    insertUrl="@Url.Action("Insert")" removeUrl="@Url.Action("Remove")" updateUrl="@Url.Action("Update")">
+
+    </e-data-manager>
+    <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+    <e-grid-pagesettings pageCount="5 "></e-grid-pagesettings>
+    <e-grid-columns>
+        <e-grid-column field="@(nameof(ExchangeRate.Id))" visible="false" isPrimaryKey="true" isIdentity="true"></e-grid-column>
+        <e-grid-column field="dateTime" headerText="Date" editType="datepickeredit" width="170"></e-grid-column>
+        <e-grid-column field="@(nameof(ExchangeRate.Value).ToLower())" headerText="Value" validationRules="@(new {required = true})" textAlign="Right" editType="numericedit" format="C2" width="120"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+@section Scripts{
+    <script>
+        function onload() {
+            this.columns[1].format =
+                { type: 'date', format: 'ccc dd MMM yy' };
+        }
+    </script>
+}

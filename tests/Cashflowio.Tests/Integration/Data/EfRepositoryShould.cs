@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Cashflowio.Core.Entities;
-using Cashflowio.Core.Interfaces;
 using Cashflowio.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using Xunit;
 
 namespace Cashflowio.Tests.Integration.Data
@@ -96,9 +94,7 @@ namespace Cashflowio.Tests.Integration.Data
         private EfRepository GetRepository()
         {
             var options = CreateNewContextOptions();
-            var mockDispatcher = new Mock<IDomainEventDispatcher>();
-
-            _dbContext = new AppDbContext(options, mockDispatcher.Object);
+            _dbContext = new AppDbContext(options);
             return new EfRepository(_dbContext);
         }
     }
