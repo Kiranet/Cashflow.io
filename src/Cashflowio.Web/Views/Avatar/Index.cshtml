@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Exchange Rate";
+    ViewData["Title"] = "Avatars";
 }
 
 <ejs-grid id="Grid" load="onload" toolbar="@(new List<string> {"Add", "Edit", "Delete"})" allowPaging="true">
@@ -8,16 +8,6 @@
     <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
     <e-grid-columns>
         <e-grid-column field="id" visible="false" isPrimaryKey="true" isIdentity="true"></e-grid-column>
-        <e-grid-column field="dateTime" headerText="Date" editType="datepickeredit" width="170"></e-grid-column>
-        <e-grid-column field="value" headerText="Value" validationRules="@(new {required = true})" textAlign="Right" editType="numericedit" format="C2" width="120"></e-grid-column>
+        <e-grid-column field="name" headerText="Name" validationRules="@(new {required = true})"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
-
-@section Scripts{
-    <script>
-        function onload() {
-            this.columns[1].format =
-                { type: 'date', format: 'ccc dd MMM yy' };
-        }
-    </script>
-}
