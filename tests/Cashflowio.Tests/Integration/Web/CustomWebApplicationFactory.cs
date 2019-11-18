@@ -1,5 +1,4 @@
-﻿using System;
-using Cashflowio.Infrastructure.Data;
+﻿using Cashflowio.Infrastructure.Data;
 using Cashflowio.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -42,17 +41,6 @@ namespace Cashflowio.Tests.Integration.Web
 
                     // Ensure the database is created.
                     db.Database.EnsureCreated();
-
-                    try
-                    {
-                        // Seed the database with test data.
-                        SeedData.PopulateTestData(db);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "An error occurred seeding the " +
-                            "database with test messages. Error: {ex.Message}");
-                    }
                 }
             });
         }

@@ -8,34 +8,34 @@ namespace Cashflowio.Core.Entities
         {
         }
 
-        private MoneyAccount(Type type, string name, Currency currency)
+        private MoneyAccount(AccountType accountType, string name, Currency currency)
         {
-            AccountType = type;
+            Type = accountType;
             Name = name;
             Currency = currency;
         }
 
-        public Type AccountType { get; private set; }
+        public AccountType Type { get; set; }
 
         #region Factory Methods
 
-        public static MoneyAccount InstanceOf(Type type, string name, Currency currency) =>
-            new MoneyAccount(type, name, currency);
+        public static MoneyAccount InstanceOf(AccountType accountType, string name, Currency currency) =>
+            new MoneyAccount(accountType, name, currency);
 
         public static MoneyAccount Cash(string name, Currency currency = Currency.Mxn) =>
-            InstanceOf(Type.Cash, name, currency);
+            InstanceOf(AccountType.Cash, name, currency);
 
         public static MoneyAccount Debit(string name, Currency currency = Currency.Mxn) =>
-            InstanceOf(Type.Debit, name, currency);
+            InstanceOf(AccountType.Debit, name, currency);
 
         public static MoneyAccount Credit(string name, Currency currency = Currency.Mxn) =>
-            InstanceOf(Type.Credit, name, currency);
+            InstanceOf(AccountType.Credit, name, currency);
 
         public static MoneyAccount Savings(string name, Currency currency = Currency.Mxn) =>
-            InstanceOf(Type.Savings, name, currency);
+            InstanceOf(AccountType.Savings, name, currency);
 
         public static MoneyAccount Prepaid(string name, Currency currency = Currency.Mxn) =>
-            InstanceOf(Type.Prepaid, name, currency);
+            InstanceOf(AccountType.Prepaid, name, currency);
 
         #endregion
 
@@ -49,50 +49,41 @@ namespace Cashflowio.Core.Entities
 
             Validate(transfer.Destination);
 
-            transfer.TransferType = GetValidType(transfer.Destination);
+            transfer.Type = GetValidType(transfer.Destination);
 
             return transfer;
         }
 
         private void Validate(MoneyAccount destination)
         {
-            var isNotAllowedSource = AccountType == Type.Credit || AccountType == Type.Prepaid;
-            var isNotAllowedForCredit = destination.AccountType == Type.Credit && AccountType != Type.Debit;
+            var isNotAllowedSource = Type == AccountType.Credit || Type == AccountType.Prepaid;
+            var isNotAllowedForCredit = destination.Type == AccountType.Credit && Type != AccountType.Debit;
 
             if (isNotAllowedSource || isNotAllowedForCredit)
-                throw new Exception($"{AccountType} to {destination.AccountType} is not valid.");
+                throw new Exception($"{Type} to {destination.Type} is not valid.");
         }
 
-        private Transfer.Type GetValidType(MoneyAccount destination)
+        private TransferType GetValidType(MoneyAccount destination)
         {
-            if (AccountType == Type.Cash && destination.AccountType == Type.Debit)
-                return Transfer.Type.Deposit;
+            if (Type == AccountType.Cash && destination.Type == AccountType.Debit)
+                return Entities.TransferType.Deposit;
 
-            switch (destination.AccountType)
+            switch (destination.Type)
             {
-                case Type.Savings:
-                    return Transfer.Type.Saving;
-                case Type.Prepaid:
-                    return Transfer.Type.Recharge;
-                case Type.Credit:
-                    return Transfer.Type.Payment;
+                case AccountType.Savings:
+                    return Entities.TransferType.Saving;
+                case AccountType.Prepaid:
+                    return Entities.TransferType.Recharge;
+                case AccountType.Credit:
+                    return Entities.TransferType.Payment;
                 default:
                 {
-                    if (AccountType == Type.Savings || AccountType == Type.Debit)
-                        return Transfer.Type.Withdrawal;
+                    if (Type == AccountType.Savings || Type == AccountType.Debit)
+                        return Entities.TransferType.Withdrawal;
 
-                    return Transfer.Type.Unknown;
+                    return Entities.TransferType.Other;
                 }
             }
-        }
-
-        public enum Type
-        {
-            Cash,
-            Debit,
-            Credit,
-            Savings,
-            Prepaid
         }
     }
 }

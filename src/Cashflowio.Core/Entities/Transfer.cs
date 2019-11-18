@@ -8,16 +8,6 @@
         public int DestinationId { get; set; }
         public MoneyAccount Destination { get; set; }
 
-        public Type TransferType { get; set; }
-
-        public enum Type
-        {
-            Deposit,
-            Withdrawal,
-            Saving,
-            Payment,
-            Recharge,
-            Unknown
-        }
+        public TransferType Type { get; set; }
     }
 }
