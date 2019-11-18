@@ -25,21 +25,21 @@ namespace Cashflowio.Tests.Core
                 new Concept
                 {
                     Amount = 3300,
-                    Destination = FakeRepository.First(MoneyAccount.Type.Debit),
+                    Destination = FakeRepository.First(AccountType.Debit),
                     PayDay = DayOfWeek.Thursday,
                     Description = "Sueldo"
                 },
                 new Concept
                 {
                     Amount = 700,
-                    Destination = FakeRepository.First(MoneyAccount.Type.Debit),
+                    Destination = FakeRepository.First(AccountType.Debit),
                     PayDay = DayOfWeek.Friday,
                     Description = "Sueldo"
                 },
                 new Concept
                 {
                     Amount = 200,
-                    Destination = FakeRepository.First(MoneyAccount.Type.Cash),
+                    Destination = FakeRepository.First(AccountType.Cash),
                     PayDay = DayOfWeek.Friday,
                     Description = "Sueldo"
                 }

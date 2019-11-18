@@ -51,7 +51,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Core\Entities" />
   </ItemGroup>
 
 </Project>

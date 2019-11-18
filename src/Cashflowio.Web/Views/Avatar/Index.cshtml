@@ -1,8 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Avatars";
+    var commands = new List<object>
+    {
+        new {title = "Money Accounts", buttonOption = new {iconCss = "fas fa-box fa-fw", cssClass = "e-info e-money-account"}}
+    };
 }
 
-<ejs-grid id="Grid" load="onload" toolbar="@(new List<string> {"Add", "Edit", "Delete"})"
+<ejs-grid id="Grid" dataBound="dataBound" load="onload" toolbar="@(new List<string> {"Add", "Edit", "Delete"})"
           height="555" width="auto" allowTextWrap="true" allowPaging="true" allowSorting="true">
     <e-grid-pagesettings pageSize="50" pageSizes="@(new[] {"10", "20", "All"})"></e-grid-pagesettings>
     <e-grid-sortsettings columns="@(new[] {new {field = "name", direction = "Ascending"}})"></e-grid-sortsettings>
@@ -12,5 +16,21 @@
     <e-grid-columns>
         <e-grid-column field="id" visible="false" isPrimaryKey="true" isIdentity="true"></e-grid-column>
         <e-grid-column field="name" headerText="Name" validationRules="@(new {required = true})"></e-grid-column>
+        <e-grid-column commands="@commands" width="100"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
+
+
+@section scripts{
+    <script>
+     function dataBound(e) {  
+            var grid = document.getElementsByClassName("e-grid")[0];
+            grid.addEventListener('click', function (e) {         
+                if (e.target.classList.contains('e-money-account')) {                     
+                    var primaryKeyValue = e.target.closest("tr").childNodes[0].innerHTML; 
+                    window.location.href = "@Url.Action("Index", "MoneyAccount")/" + primaryKeyValue;
+                }  
+            });
+     }  
+</script>
+}

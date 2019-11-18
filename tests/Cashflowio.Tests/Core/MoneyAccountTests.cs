@@ -1,6 +1,6 @@
 ﻿using System;
-using Cashflowio.Core;
 using Cashflowio.Core.Entities;
+using Cashflowio.Core.Utils;
 using Xunit;
 
 namespace Cashflowio.Tests.Core
@@ -8,38 +8,38 @@ namespace Cashflowio.Tests.Core
     public class MoneyAccountTests
     {
         [Theory]
-        [InlineData(MoneyAccount.Type.Cash, MoneyAccount.Type.Debit, Transfer.Type.Deposit)]
-        [InlineData(MoneyAccount.Type.Debit, MoneyAccount.Type.Cash, Transfer.Type.Withdrawal)]
-        [InlineData(MoneyAccount.Type.Savings, MoneyAccount.Type.Cash, Transfer.Type.Withdrawal)]
-        [InlineData(MoneyAccount.Type.Savings, MoneyAccount.Type.Debit, Transfer.Type.Withdrawal)]
-        [InlineData(MoneyAccount.Type.Cash, MoneyAccount.Type.Savings, Transfer.Type.Saving)]
-        [InlineData(MoneyAccount.Type.Debit, MoneyAccount.Type.Savings, Transfer.Type.Saving)]
-        [InlineData(MoneyAccount.Type.Cash, MoneyAccount.Type.Prepaid, Transfer.Type.Recharge)]
-        [InlineData(MoneyAccount.Type.Debit, MoneyAccount.Type.Prepaid, Transfer.Type.Recharge)]
-        [InlineData(MoneyAccount.Type.Debit, MoneyAccount.Type.Credit, Transfer.Type.Payment)]
-        public void MakeValidTransfers(MoneyAccount.Type source, MoneyAccount.Type destination, Transfer.Type expected)
+        [InlineData(AccountType.Cash, AccountType.Debit, TransferType.Deposit)]
+        [InlineData(AccountType.Debit, AccountType.Cash, TransferType.Withdrawal)]
+        [InlineData(AccountType.Savings, AccountType.Cash, TransferType.Withdrawal)]
+        [InlineData(AccountType.Savings, AccountType.Debit, TransferType.Withdrawal)]
+        [InlineData(AccountType.Cash, AccountType.Savings, TransferType.Saving)]
+        [InlineData(AccountType.Debit, AccountType.Savings, TransferType.Saving)]
+        [InlineData(AccountType.Cash, AccountType.Prepaid, TransferType.Recharge)]
+        [InlineData(AccountType.Debit, AccountType.Prepaid, TransferType.Recharge)]
+        [InlineData(AccountType.Debit, AccountType.Credit, TransferType.Payment)]
+        public void MakeValidTransfers(AccountType source, AccountType destination, TransferType expected)
         {
             var sourceAccount = FakeRepository.First(source);
             var destinationAccount = FakeRepository.First(destination);
 
             var transfer = sourceAccount.TransferTo(destinationAccount);
 
-            Assert.Equal(expected, transfer.TransferType);
+            Assert.Equal(expected, transfer.Type);
         }
 
         [Theory]
-        [InlineData(MoneyAccount.Type.Credit, null)]
-        [InlineData(MoneyAccount.Type.Prepaid, null)]
-        [InlineData(MoneyAccount.Type.Cash, MoneyAccount.Type.Credit)]
-        [InlineData(MoneyAccount.Type.Savings, MoneyAccount.Type.Credit)]
-        public void MakeInvalidTransfers(MoneyAccount.Type? source, MoneyAccount.Type? destination)
+        [InlineData(AccountType.Credit, null)]
+        [InlineData(AccountType.Prepaid, null)]
+        [InlineData(AccountType.Cash, AccountType.Credit)]
+        [InlineData(AccountType.Savings, AccountType.Credit)]
+        public void MakeInvalidTransfers(AccountType? source, AccountType? destination)
         {
             var sourceAccount = FakeRepository.FirstOrNull(source);
             var destinationAccount = FakeRepository.FirstOrNull(destination);
 
             if (sourceAccount == null || destinationAccount == null)
             {
-                foreach (var accountType in EnumUtils.GetTypedValues<MoneyAccount.Type>())
+                foreach (var accountType in EnumUtils.GetTypedValues<AccountType>())
                 {
                     var auxAccount = FakeRepository.First(accountType);
 

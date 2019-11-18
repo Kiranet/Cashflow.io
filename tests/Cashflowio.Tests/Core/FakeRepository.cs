@@ -17,9 +17,9 @@ namespace Cashflowio.Tests.Core
             MoneyAccount.Prepaid("Costco")
         };
 
-        public static MoneyAccount FirstOrNull(MoneyAccount.Type? type) =>
-            Accounts.FirstOrDefault(x => x.AccountType == type);
+        public static MoneyAccount FirstOrNull(AccountType? type) =>
+            Accounts.FirstOrDefault(x => x.Type == type);
 
-        public static MoneyAccount First(MoneyAccount.Type? type) => Accounts.First(x => x.AccountType == type);
+        public static MoneyAccount First(AccountType? type) => Accounts.First(x => x.Type == type);
     }
 }

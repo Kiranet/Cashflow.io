@@ -6,13 +6,13 @@
           height="555" width="auto"allowTextWrap="true" allowPaging="true" allowSorting="true">
     <e-grid-pagesettings pageSize="50" pageSizes="@(new[] {"10", "50", "100", "200", "500", "1000", "All"})"></e-grid-pagesettings>
     <e-grid-filtersettings type="Excel"></e-grid-filtersettings>
-    <e-grid-sortsettings columns="@(new[] {new {field = "dateTime", direction = "Descending"}})"></e-grid-sortsettings>
+    <e-grid-sortsettings columns="@(new[] {new {field = "date", direction = "Descending"}})"></e-grid-sortsettings>
     <e-data-manager adaptor="UrlAdaptor" url="@Url.Action("DataSource")" crudUrl="@Url.Action("Crud")"></e-data-manager>
     <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog" showDeleteConfirmDialog="true"></e-grid-editSettings>
     <e-grid-pagesettings pageCount="10"></e-grid-pagesettings>
     <e-grid-columns>
         <e-grid-column field="id" visible="false" isPrimaryKey="true" isIdentity="true"></e-grid-column>
-        <e-grid-column field="dateTime" headerText="Date" editType="datepickeredit" width="170"></e-grid-column>
+        <e-grid-column field="date" headerText="Date" editType="datepickeredit" width="170"></e-grid-column>
         <e-grid-column field="description" headerText="Description" width="170"></e-grid-column>
         <e-grid-column field="value" headerText="Value" validationRules="@(new {required = true})" textAlign="Right" editType="numericedit" format="C2" width="120"></e-grid-column>
     </e-grid-columns>
