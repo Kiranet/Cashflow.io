@@ -14,7 +14,7 @@ namespace Cashflowio.Web.Controllers
             _repository = repository;
         }
 
-        public IActionResult Index()
+        public IActionResult Transfer()
         {
             var moneyAccountsByName = _repository.List<MoneyAccount>().ToDictionary(x => x.Name, x => x);
             var transfers = _repository.List<RawTransaction>().Where(x => x.Type == nameof(Transfer)).Select(x =>
@@ -31,7 +31,7 @@ namespace Cashflowio.Web.Controllers
                 transfer.Source = sourceFound;
                 transfer.DestinationId = destinationFound?.Id ?? 0;
                 transfer.Destination = destinationFound;
-                
+
                 return transfer;
             });
 

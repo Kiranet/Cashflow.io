@@ -9,7 +9,7 @@ namespace Cashflowio.Tests.Core
         private static readonly List<MoneyAccount> Accounts = new List<MoneyAccount>
         {
             MoneyAccount.Cash("Billetera"),
-            MoneyAccount.Cash("Dólares", Currency.Usd),
+            MoneyAccount.Cash("Dólares", Currency.USD),
             MoneyAccount.Debit("Débito"),
             MoneyAccount.Credit("Crédito"),
             MoneyAccount.Savings("AFORE"),
@@ -18,8 +18,8 @@ namespace Cashflowio.Tests.Core
         };
 
         public static MoneyAccount FirstOrNull(AccountType? type) =>
-            Accounts.FirstOrDefault(x => x.Type == type);
+            Accounts.FirstOrDefault(x => x.Type == type?.ToString());
 
-        public static MoneyAccount First(AccountType? type) => Accounts.First(x => x.Type == type);
+        public static MoneyAccount First(AccountType? type) => Accounts.First(x => x.Type == type?.ToString());
     }
 }

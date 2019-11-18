@@ -23,8 +23,8 @@ namespace Cashflowio.Tests.Core
             var destinationAccount = FakeRepository.First(destination);
 
             var transfer = sourceAccount.TransferTo(destinationAccount);
-
-            Assert.Equal(expected, transfer.Type);
+            
+            Assert.Equal(expected.ToString(), transfer.Type);
         }
 
         [Theory]

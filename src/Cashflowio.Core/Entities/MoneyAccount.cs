@@ -10,31 +10,31 @@ namespace Cashflowio.Core.Entities
 
         private MoneyAccount(AccountType accountType, string name, Currency currency)
         {
-            Type = accountType;
+            Type = accountType.ToString();
             Name = name;
-            Currency = currency;
+            Currency = currency.ToString();
         }
 
-        public AccountType Type { get; set; }
+        public string Type { get; set; }
 
         #region Factory Methods
 
         public static MoneyAccount InstanceOf(AccountType accountType, string name, Currency currency) =>
             new MoneyAccount(accountType, name, currency);
 
-        public static MoneyAccount Cash(string name, Currency currency = Currency.Mxn) =>
+        public static MoneyAccount Cash(string name, Currency currency = Entities.Currency.MXN) =>
             InstanceOf(AccountType.Cash, name, currency);
 
-        public static MoneyAccount Debit(string name, Currency currency = Currency.Mxn) =>
+        public static MoneyAccount Debit(string name, Currency currency = Entities.Currency.MXN) =>
             InstanceOf(AccountType.Debit, name, currency);
 
-        public static MoneyAccount Credit(string name, Currency currency = Currency.Mxn) =>
+        public static MoneyAccount Credit(string name, Currency currency = Entities.Currency.MXN) =>
             InstanceOf(AccountType.Credit, name, currency);
 
-        public static MoneyAccount Savings(string name, Currency currency = Currency.Mxn) =>
+        public static MoneyAccount Savings(string name, Currency currency = Entities.Currency.MXN) =>
             InstanceOf(AccountType.Savings, name, currency);
 
-        public static MoneyAccount Prepaid(string name, Currency currency = Currency.Mxn) =>
+        public static MoneyAccount Prepaid(string name, Currency currency = Entities.Currency.MXN) =>
             InstanceOf(AccountType.Prepaid, name, currency);
 
         #endregion
@@ -49,15 +49,16 @@ namespace Cashflowio.Core.Entities
 
             Validate(transfer.Destination);
 
-            transfer.Type = GetValidType(transfer.Destination);
+            transfer.Type = GetValidType(transfer.Destination).ToString();
 
             return transfer;
         }
 
         private void Validate(MoneyAccount destination)
         {
-            var isNotAllowedSource = Type == AccountType.Credit || Type == AccountType.Prepaid;
-            var isNotAllowedForCredit = destination.Type == AccountType.Credit && Type != AccountType.Debit;
+            var isNotAllowedSource = Type == AccountType.Credit.ToString() || Type == AccountType.Prepaid.ToString();
+            var isNotAllowedForCredit =
+                destination.Type == AccountType.Credit.ToString() && Type != AccountType.Debit.ToString();
 
             if (isNotAllowedSource || isNotAllowedForCredit)
                 throw new Exception($"{Type} to {destination.Type} is not valid.");
@@ -65,25 +66,22 @@ namespace Cashflowio.Core.Entities
 
         private TransferType GetValidType(MoneyAccount destination)
         {
-            if (Type == AccountType.Cash && destination.Type == AccountType.Debit)
-                return Entities.TransferType.Deposit;
+            if (Type == AccountType.Cash.ToString() && destination.Type == AccountType.Debit.ToString())
+                return TransferType.Deposit;
 
-            switch (destination.Type)
-            {
-                case AccountType.Savings:
-                    return Entities.TransferType.Saving;
-                case AccountType.Prepaid:
-                    return Entities.TransferType.Recharge;
-                case AccountType.Credit:
-                    return Entities.TransferType.Payment;
-                default:
-                {
-                    if (Type == AccountType.Savings || Type == AccountType.Debit)
-                        return Entities.TransferType.Withdrawal;
+            if (destination.Type == AccountType.Savings.ToString())
+                return TransferType.Saving;
 
-                    return Entities.TransferType.Other;
-                }
-            }
+            if (destination.Type == AccountType.Prepaid.ToString())
+                return TransferType.Recharge;
+
+            if (destination.Type == AccountType.Credit.ToString())
+                return TransferType.Payment;
+
+            if (Type == AccountType.Savings.ToString() || Type == AccountType.Debit.ToString())
+                return TransferType.Withdrawal;
+
+            return TransferType.Other;
         }
     }
 }

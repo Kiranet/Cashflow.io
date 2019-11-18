@@ -5,17 +5,15 @@
 
     var types = new Syncfusion.EJ2.DropDowns.DropDownList
     {
-        Value = "0",
-        DataSource = new SelectList(Enum.GetValues(typeof(AccountType)).Cast<AccountType>()
-            .Select(x => new {Value = (int) x, Text = x.ToString()}), "Value", "Text"),
+        Value = AccountType.Cash.ToString(),
+        DataSource = new SelectList(Enum.GetNames(typeof(AccountType)).Select(x => new {Value = x, Text = x}), "Value", "Text"),
         Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings {Value = "Value", Text = "Text"}
     };
 
     var currencies = new Syncfusion.EJ2.DropDowns.DropDownList
     {
-        Value = "0",
-        DataSource = new SelectList(Enum.GetValues(typeof(Currency)).Cast<Currency>()
-            .Select(x => new {Value = (int) x, Text = x.ToString()}), "Value", "Text"),
+        Value = Currency.MXN.ToString(),
+        DataSource = new SelectList(Enum.GetNames(typeof(Currency)).Select(x => new {Value = x, Text = x}), "Value", "Text"),
         Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings {Value = "Value", Text = "Text"}
     };
 
@@ -28,7 +26,7 @@
     };
 }
 
-<ejs-grid id="Grid" toolbar="@(new List<string> {"Add", "Edit", "Delete"})" actionComplete="actionComplete"
+<ejs-grid id="Grid" toolbar="@(new List<string> {"Add", "Edit", "Delete"})"
           height="555" width="auto" allowTextWrap="true" allowPaging="true" allowSorting="true">
     <e-grid-pagesettings pageSize="50" pageSizes="@(new[] {"10", "50", "100", "200", "500", "1000", "All"})"></e-grid-pagesettings>
     <e-grid-filtersettings type="Excel"></e-grid-filtersettings>
@@ -44,17 +42,3 @@
         <e-grid-column field="avatarId" headerText="Avatar" editType="dropdownedit" edit="new {@params = avatars }" width="120"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
-
-@section Scripts{
-    <script>
-     function actionComplete(args) {
-        if (args.requestType === 'beginEdit' || args.requestType === 'add') {   
-            if (args.requestType === 'beginEdit') {
-                 var data = args.rowData;
-                 
-
-            }
-        }
-    }
-    </script>
-}

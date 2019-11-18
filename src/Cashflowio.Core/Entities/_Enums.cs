@@ -2,8 +2,8 @@
 {
     public enum Currency
     {
-        Mxn,
-        Usd
+        MXN,
+        USD
     }
 
     public enum Recurrence
