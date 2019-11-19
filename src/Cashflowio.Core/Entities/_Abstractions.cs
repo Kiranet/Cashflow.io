@@ -7,9 +7,6 @@ namespace Cashflowio.Core.Entities
     {
         public string Name { get; set; }
         public string Currency { get; set; }
-
-        public int AvatarId { get; set; }
-        public Avatar Avatar { get; set; }
     }
 
     public abstract class Transaction : BaseEntity

@@ -49,6 +49,7 @@
     <_ContentIncludedByDefault Remove="wwwroot\lib\open-iconic\font\fonts\open-iconic.otf" />
     <_ContentIncludedByDefault Remove="wwwroot\lib\open-iconic\font\fonts\open-iconic.ttf" />
     <_ContentIncludedByDefault Remove="wwwroot\lib\open-iconic\font\fonts\open-iconic.woff" />
+    <_ContentIncludedByDefault Remove="Views\Avatar\Index.cshtml" />
   </ItemGroup>
 
 </Project>

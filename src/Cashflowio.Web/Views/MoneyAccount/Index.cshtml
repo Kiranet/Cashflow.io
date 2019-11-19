@@ -16,14 +16,6 @@
         DataSource = new SelectList(Enum.GetNames(typeof(Currency)).Select(x => new {Value = x, Text = x}), "Value", "Text"),
         Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings {Value = "Value", Text = "Text"}
     };
-
-    var avatars = new Syncfusion.EJ2.DropDowns.DropDownList
-    {
-        Value = ViewBag.Id.ToString(),
-        DataSource = new SelectList(Repository.List<Avatar>()
-            .Select(x => new {Value = x.Id, Text = x.Name}), "Value", "Text"),
-        Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings {Value = "Value", Text = "Text"}
-    };
 }
 
 <ejs-grid id="Grid" toolbar="@(new List<string> {"Add", "Edit", "Delete"})"
@@ -39,6 +31,5 @@
         <e-grid-column field="name" headerText="Name" validationRules="@(new {required = true})" width="170"></e-grid-column>
         <e-grid-column field="type" headerText="Type" editType="dropdownedit" edit="new {@params = types }" width="120"></e-grid-column>
         <e-grid-column field="currency" headerText="Currency" editType="dropdownedit" edit="new {@params = currencies }" width="120"></e-grid-column>
-        <e-grid-column field="avatarId" headerText="Avatar" editType="dropdownedit" edit="new {@params = avatars }" width="120"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
