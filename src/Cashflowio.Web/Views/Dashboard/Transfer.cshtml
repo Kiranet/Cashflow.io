@@ -16,8 +16,9 @@
         <e-grid-column field="@nameof(Transfer.Type)" headerText="Type" width="100" textAlign="Center"></e-grid-column>
         <e-grid-column field="Source.Name" headerText="Source" width="100" textAlign="Center"></e-grid-column>
         <e-grid-column field="Destination.Name" headerText="Destination" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(Transfer.Description)" headerText="Description" width="200" textAlign="Center"></e-grid-column>
+        @* <e-grid-column field="@nameof(Transfer.Description)" headerText="Description" width="200" textAlign="Center"></e-grid-column> *@
         <e-grid-column field="@nameof(Transfer.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+        <e-grid-column field="ExchangeRate.Value" headerText="Exchange Rate" width="100" type="number" textAlign="Right"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
 

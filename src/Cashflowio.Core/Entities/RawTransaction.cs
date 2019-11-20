@@ -16,5 +16,6 @@ namespace Cashflowio.Core.Entities
         public string CurrencyOfConversion { get; set; }
         public double AmountConverted { get; set; }
         public string Currency { get; set; }
+        public bool IsProcessed { get; set; }
     }
 }

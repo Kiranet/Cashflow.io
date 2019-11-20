@@ -66,6 +66,12 @@ namespace Cashflowio.Core.Entities
 
         private TransferType GetValidType(MoneyAccount destination)
         {
+            if (Currency != destination.Currency)
+                return TransferType.Exchange;
+
+            if (Type == destination.Type)
+                return TransferType.Cashflow;
+
             if (Type == AccountType.Cash.ToString() && destination.Type == AccountType.Debit.ToString())
                 return TransferType.Deposit;
 
@@ -74,9 +80,6 @@ namespace Cashflowio.Core.Entities
 
             if (destination.Type == AccountType.Prepaid.ToString())
                 return TransferType.Recharge;
-
-            if (destination.Type == AccountType.Credit.ToString())
-                return TransferType.Payment;
 
             if (Type == AccountType.Savings.ToString() || Type == AccountType.Debit.ToString())
                 return TransferType.Withdrawal;

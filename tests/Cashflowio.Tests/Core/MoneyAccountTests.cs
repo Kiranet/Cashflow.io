@@ -16,14 +16,16 @@ namespace Cashflowio.Tests.Core
         [InlineData(AccountType.Debit, AccountType.Savings, TransferType.Saving)]
         [InlineData(AccountType.Cash, AccountType.Prepaid, TransferType.Recharge)]
         [InlineData(AccountType.Debit, AccountType.Prepaid, TransferType.Recharge)]
-        [InlineData(AccountType.Debit, AccountType.Credit, TransferType.Payment)]
+        [InlineData(AccountType.Debit, AccountType.Debit, TransferType.Cashflow)]
+        [InlineData(AccountType.Cash, AccountType.Cash, TransferType.Cashflow)]
+        [InlineData(AccountType.Savings, AccountType.Savings, TransferType.Cashflow)]
         public void MakeValidTransfers(AccountType source, AccountType destination, TransferType expected)
         {
             var sourceAccount = FakeRepository.First(source);
             var destinationAccount = FakeRepository.First(destination);
 
             var transfer = sourceAccount.TransferTo(destinationAccount);
-            
+
             Assert.Equal(expected.ToString(), transfer.Type);
         }
 
