@@ -7,10 +7,14 @@ namespace Cashflowio.Core.Entities
 {
     public class IncomeSource : Account
     {
+        public IncomeSource()
+        {
+        }
+
         private IncomeSource(string name, Currency currency)
         {
             Name = name;
-            Currency = currency;
+            Currency = currency.ToString();
         }
 
         public DateTime StartDate { get; set; }
@@ -20,12 +24,12 @@ namespace Cashflowio.Core.Entities
 
         public List<Concept> Concepts { get; set; } = new List<Concept>();
 
-        public static IncomeSource Fixed(string name, Currency currency = Currency.Mxn)
+        public static IncomeSource Fixed(string name, Currency currency = Entities.Currency.MXN)
         {
             return new IncomeSource(name, currency) {IsFixed = true};
         }
 
-        public static IncomeSource Variable(string name, Currency currency = Currency.Mxn)
+        public static IncomeSource Variable(string name, Currency currency = Entities.Currency.MXN)
         {
             return new IncomeSource(name, currency) {IsFixed = false};
         }

@@ -2,8 +2,8 @@
 {
     public enum Currency
     {
-        Mxn,
-        Usd
+        MXN,
+        USD
     }
 
     public enum Recurrence
@@ -25,11 +25,12 @@
 
     public enum TransferType
     {
+        Cashflow,
         Deposit,
         Withdrawal,
         Saving,
-        Payment,
         Recharge,
+        Exchange,
         Other
     }
 }

@@ -8,6 +8,6 @@
         public int DestinationId { get; set; }
         public MoneyAccount Destination { get; set; }
 
-        public TransferType Type { get; set; }
+        public string Type { get; set; }
     }
 }

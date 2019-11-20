@@ -7,7 +7,7 @@ namespace Cashflowio.Core.Entities
     {
         public DateTime Date { get; set; }
         public double Value { get; set; }
-        public Currency Currency { get; set; } = Currency.Usd;
+        public Currency Currency { get; set; } = Currency.USD;
         public string Description { get; set; }
     }
 }

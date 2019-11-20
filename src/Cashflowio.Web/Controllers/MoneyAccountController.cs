@@ -8,7 +8,6 @@ namespace Cashflowio.Web.Controllers
     {
         public MoneyAccountController(IRepository repository) : base(repository)
         {
-            FilterBy = (moneyAccount, avatarId) => moneyAccount.AvatarId == avatarId;
         }
     }
 }

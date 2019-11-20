@@ -17,9 +17,9 @@ namespace Cashflowio.Infrastructure.Data
         public DbSet<RawTransaction> RawTransactions { get; set; }
         public DbSet<Binnacle> Binnacle { get; set; }
         public DbSet<ExchangeRate> ExchangeRates { get; set; }
-        public DbSet<Avatar> Avatars { get; set; }
         public DbSet<MoneyAccount> MoneyAccounts { get; set; }
         public DbSet<IncomeSource> IncomeSources { get; set; }
         public DbSet<Concept> Concepts { get; set; }
+        public DbSet<Transfer> Transfers { get; set; }
     }
 }
