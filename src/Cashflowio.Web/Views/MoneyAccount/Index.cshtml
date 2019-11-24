@@ -16,9 +16,14 @@
         DataSource = new SelectList(Enum.GetNames(typeof(Currency)).Select(x => new {Value = x, Text = x}), "Value", "Text"),
         Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings {Value = "Value", Text = "Text"}
     };
+
+    var commands = new List<object>
+    {
+        new {title = "Income Sources", buttonOption = new {iconCss = "fas fa-arrow-circle-down fa-fw", cssClass = "e-success e-income-source"}}
+    };
 }
 
-<ejs-grid id="Grid" toolbar="@(new List<string> {"Add", "Edit", "Delete"})"
+<ejs-grid id="Grid" toolbar="@(new List<string> {"Add", "Edit", "Delete"})" dataBound="dataBound"
           height="555" width="auto" allowTextWrap="true" allowPaging="true" allowSorting="true">
     <e-grid-pagesettings pageSize="50" pageSizes="@(new[] {"10", "50", "100", "200", "500", "1000", "All"})"></e-grid-pagesettings>
     <e-grid-filtersettings type="Excel"></e-grid-filtersettings>
@@ -31,5 +36,20 @@
         <e-grid-column field="name" headerText="Name" validationRules="@(new {required = true})" width="170"></e-grid-column>
         <e-grid-column field="type" headerText="Type" editType="dropdownedit" edit="new {@params = types }" width="120"></e-grid-column>
         <e-grid-column field="currency" headerText="Currency" editType="dropdownedit" edit="new {@params = currencies }" width="120"></e-grid-column>
+        <e-grid-column commands="@commands" width="100"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
+
+@section scripts{
+    <script>
+     function dataBound(e) {  
+            var grid = document.getElementsByClassName("e-grid")[0];
+            grid.addEventListener('click', function (e) {         
+                if (e.target.classList.contains('e-income-source')) {                     
+                    var primaryKeyValue = e.target.closest("tr").childNodes[0].innerHTML; 
+                    window.location.href = "@Url.Action("Index", "IncomeSource")/" + primaryKeyValue;
+                }  
+            });
+     }  
+</script>
+}
