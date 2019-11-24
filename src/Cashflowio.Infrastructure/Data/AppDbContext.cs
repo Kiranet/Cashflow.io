@@ -11,7 +11,7 @@ namespace Cashflowio.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Concept>().Ignore(x => x.Dates);
+            modelBuilder.Entity<IncomeSource>().Ignore(x => x.GeneratedConcepts);
         }
 
         public DbSet<RawTransaction> RawTransactions { get; set; }
@@ -19,7 +19,6 @@ namespace Cashflowio.Infrastructure.Data
         public DbSet<ExchangeRate> ExchangeRates { get; set; }
         public DbSet<MoneyAccount> MoneyAccounts { get; set; }
         public DbSet<IncomeSource> IncomeSources { get; set; }
-        public DbSet<Concept> Concepts { get; set; }
         public DbSet<Transfer> Transfers { get; set; }
     }
 }
