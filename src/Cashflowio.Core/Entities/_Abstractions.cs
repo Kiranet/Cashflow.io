@@ -17,5 +17,8 @@ namespace Cashflowio.Core.Entities
 
         public int? ExchangeRateId { get; set; }
         public ExchangeRate ExchangeRate { get; set; }
+
+        public int RawTransactionId { get; set; }
+        public RawTransaction RawTransaction { get; set; }
     }
 }

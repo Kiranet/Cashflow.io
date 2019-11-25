@@ -4,14 +4,16 @@ using Cashflowio.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cashflowio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191124191902_IncomeSource2")]
+    partial class IncomeSource2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,9 +97,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.Property<int?>("ExchangeRateId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RawTransactionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SourceId")
                         .HasColumnType("int");
 
@@ -106,8 +105,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasIndex("DestinationId");
 
                     b.HasIndex("ExchangeRateId");
-
-                    b.HasIndex("RawTransactionId");
 
                     b.HasIndex("SourceId");
 
@@ -226,9 +223,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.Property<int?>("ExchangeRateId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RawTransactionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SourceId")
                         .HasColumnType("int");
 
@@ -240,8 +234,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasIndex("DestinationId");
 
                     b.HasIndex("ExchangeRateId");
-
-                    b.HasIndex("RawTransactionId");
 
                     b.HasIndex("SourceId");
 
@@ -259,12 +251,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasOne("Cashflowio.Core.Entities.ExchangeRate", "ExchangeRate")
                         .WithMany()
                         .HasForeignKey("ExchangeRateId");
-
-                    b.HasOne("Cashflowio.Core.Entities.RawTransaction", "RawTransaction")
-                        .WithMany()
-                        .HasForeignKey("RawTransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("Cashflowio.Core.Entities.IncomeSource", "Source")
                         .WithMany()
@@ -284,12 +270,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasOne("Cashflowio.Core.Entities.ExchangeRate", "ExchangeRate")
                         .WithMany()
                         .HasForeignKey("ExchangeRateId");
-
-                    b.HasOne("Cashflowio.Core.Entities.RawTransaction", "RawTransaction")
-                        .WithMany()
-                        .HasForeignKey("RawTransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("Cashflowio.Core.Entities.MoneyAccount", "Source")
                         .WithMany()
