@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cashflowio.Core.Entities;
 using Cashflowio.Core.Interfaces;
@@ -18,41 +19,107 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Transfer()
         {
-            var moneyAccountsByName = _repository.List<MoneyAccount>().ToDictionary(x => x.Name, x => x);
-            var exchangeRates = _repository.List<ExchangeRate>().OrderBy(x => x.Date).ToList();
-
-            var transfers = _repository.List<RawTransaction>().Where(x => x.Type == nameof(Transfer) && !x.IsProcessed)
-                .Select(x =>
-                {
-                    moneyAccountsByName.TryGetValue(x.Source, out var sourceFound);
-                    moneyAccountsByName.TryGetValue(x.Destination, out var destinationFound);
-
-                    var transfer = sourceFound?.TransferTo(destinationFound) ?? new Transfer();
-
-                    transfer.Amount = x.Amount;
-                    transfer.Date = x.Date;
-                    transfer.Description = x.Note;
-
-                    transfer.ExchangeRate = transfer.Type == TransferType.Exchange.ToString()
-                        ? exchangeRates.Find(rt => rt.Date >= transfer.Date)
-                        : null;
-
-                    var rawTransaction = _repository.GetById<RawTransaction>(x.Id);
-                    rawTransaction.IsProcessed = true;
-                    _repository.Update(rawTransaction);
-
-                    return transfer;
-                });
-
-            foreach (var transfer in transfers)
+            foreach (var transfer in GetTransfersFromRawTransactions())
             {
-                //TODO: Considerar guardar el id para referencias futuras y solo cuando se confirme que se guardo habilitar el IsProcessed
                 var newTransfer = _repository.Add(transfer);
                 if (newTransfer.Id == 0)
                     throw new Exception($"{JsonConvert.SerializeObject(newTransfer)}");
+
+                var rawTransaction = _repository.GetById<RawTransaction>(newTransfer.RawTransactionId);
+                rawTransaction.IsProcessed = true;
+                _repository.Update(rawTransaction);
             }
 
             return View(_repository.List<Transfer>());
+        }
+
+        private IEnumerable<Transfer> GetTransfersFromRawTransactions()
+        {
+            var moneyAccountsByName = _repository.List<MoneyAccount>().ToDictionary(x => x.Name);
+            var exchangeRates = _repository.List<ExchangeRate>().OrderBy(x => x.Date).ToList();
+
+            var transfers = _repository.List<RawTransaction>()
+                .Where(rt => rt.Type == nameof(Transfer) && !rt.IsProcessed)
+                .Select(rt =>
+                {
+                    moneyAccountsByName.TryGetValue(rt.Source, out var sourceFound);
+                    moneyAccountsByName.TryGetValue(rt.Destination, out var destinationFound);
+
+                    var transfer = sourceFound?.TransferTo(destinationFound) ?? new Transfer();
+
+                    transfer.RawTransactionId = rt.Id;
+                    transfer.Amount = rt.Amount;
+                    transfer.Date = rt.Date;
+                    transfer.Description = rt.Note;
+
+                    transfer.ExchangeRate = transfer.Type == TransferType.Exchange.ToString()
+                        ? exchangeRates.Find(x => x.Date >= transfer.Date)
+                        : null;
+
+                    return transfer;
+                });
+            return transfers;
+        }
+
+        private IEnumerable<Income> GetIncomeFromRawTransactions()
+        {
+            var incomeSourcesByName = _repository.List<IncomeSource>().ToDictionary(x => x.Name);
+            var moneyAccountsByName = _repository.List<MoneyAccount>().ToDictionary(x => x.Name);
+
+            var incomeFromSource = _repository.List<IncomeSource>()
+                .Select(x => x.GenerateIncome()).SelectMany(x => x).ToList();
+
+            var income = _repository.List<RawTransaction>()
+                .Where(rt => rt.Type == nameof(Income) && !rt.IsProcessed)
+                .Select(rt =>
+                {
+                    var newIncome = new Income
+                    {
+                        RawTransactionId = rt.Id
+                    };
+
+                    var incomeFound =
+                        incomeFromSource.FirstOrDefault(x => x.Amount.Equals(rt.Amount) && x.Date.Date == rt.Date.Date);
+
+                    if (incomeFound != null)
+                    {
+                        newIncome.Date = incomeFound.Date;
+                        newIncome.Amount = incomeFound.Amount;
+                        newIncome.SourceId = incomeFound.SourceId;
+                        newIncome.DestinationId = incomeFound.DestinationId;
+                        newIncome.Description = incomeFound.Description;
+                    }
+                    else
+                    {
+                        newIncome.Date = rt.Date;
+                        newIncome.Amount = rt.Amount;
+                        incomeSourcesByName.TryGetValue(rt.Source, out var sourceFound);
+                        moneyAccountsByName.TryGetValue(rt.Destination, out var destinationFound);
+                        newIncome.SourceId = sourceFound?.Id ?? 0;
+                        newIncome.DestinationId = destinationFound?.Id ?? 0;
+                        newIncome.Description = $"{rt.Tag} {rt.Note}";
+                    }
+
+                    return newIncome;
+                });
+
+            return income;
+        }
+
+        public IActionResult Income()
+        {
+            foreach (var income in GetIncomeFromRawTransactions())
+            {
+                var newIncome = _repository.Add(income);
+                if (newIncome.Id == 0)
+                    throw new Exception($"{JsonConvert.SerializeObject(newIncome)}");
+
+                var rawTransaction = _repository.GetById<RawTransaction>(newIncome.RawTransactionId);
+                rawTransaction.IsProcessed = true;
+                _repository.Update(rawTransaction);
+            }
+
+            return View(_repository.List<Income>());
         }
     }
 }

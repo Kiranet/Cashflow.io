@@ -37,7 +37,8 @@ namespace Cashflowio.Core.Entities
                     Date = date,
                     Amount = concept.Amount,
                     Description = concept.Description,
-                    Destination = concept.Destination
+                    SourceId = Id,
+                    DestinationId = concept.DestinationId
                 }));
             }
 
