@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install" />
     <Exec Command="dotnet bundle" />
   </Target>
 
@@ -42,14 +41,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\lib\open-iconic\font\css\open-iconic-bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\open-iconic\font\fonts\open-iconic.otf" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\open-iconic\font\fonts\open-iconic.ttf" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\open-iconic\font\fonts\open-iconic.woff" />
-    <_ContentIncludedByDefault Remove="Views\Avatar\Index.cshtml" />
   </ItemGroup>
 
 </Project>
