@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "scripts": {
+    "clean": "node ./clean.js",
+    "libman": "libman clean && libman restore",
+    "webpack": "webpack ./wwwroot/js/site.js --output ./wwwroot/dist/js/site.min.js --mode=development",
+    "build": "npm run clean && npm run webpack",
+    "postinstall": "npm run libman"
+  },
+  "dependencies": {
+    "admin-lte": "3.0.1"
+  },
+  "devDependencies": {
+    "fs": "0.0.2",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.10"
+  }
+}

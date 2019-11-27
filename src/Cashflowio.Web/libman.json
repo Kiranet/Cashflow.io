@@ -1,21 +1,35 @@
 {
   "version": "1.0",
-  "defaultProvider": "cdnjs",
+  "defaultProvider": "filesystem",
   "libraries": [
     {
-      "library": "jquery@3.4.1",
-      "destination": "wwwroot/lib/jquery",
-      "files": [
-        "jquery.slim.min.js"
-      ]
+      "library": "node_modules/admin-lte/plugins/jquery/",
+      "files": [ "jquery.min.js" ],
+      "destination": "wwwroot/lib/jquery"
     },
     {
-      "library": "twitter-bootstrap@4.3.1",
-      "destination": "wwwroot/lib/bootstrap",
-      "files": [
-        "css/bootstrap.min.css",
-        "js/bootstrap.bundle.min.js"
-      ]
+      "library": "node_modules/admin-lte/plugins/bootstrap/js/",
+      "files": [ "bootstrap.bundle.min.js" ],
+      "destination": "wwwroot/lib/bootstrap"
+    },
+    {
+      "library": "node_modules/admin-lte/plugins/fontawesome-free/css/",
+      "files": [ "all.min.css" ],
+      "destination": "wwwroot/lib/fontawesome"
+    },
+    {
+      "library": "node_modules/admin-lte/plugins/fontawesome-free/webfonts/",
+      "destination": "wwwroot/lib/webfonts"
+    },
+    {
+      "library": "node_modules/admin-lte/dist/js/",
+      "files": [ "adminlte.min.js" ],
+      "destination": "wwwroot/lib/admin-lte"
+    },
+    {
+      "library": "node_modules/admin-lte/dist/css/",
+      "files": [ "adminlte.min.css" ],
+      "destination": "wwwroot/lib/admin-lte"
     }
   ]
 }
