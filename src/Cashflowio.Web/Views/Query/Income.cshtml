@@ -1,6 +1,21 @@
 ﻿@model IEnumerable<Income>
 @{
     ViewData["Title"] = "Income";
+
+    var source = Context.Request.Query["source"].ToString();
+    var description = Context.Request.Query["description"].ToString();
+
+    var filterColumns = new List<object>();
+
+    if (!string.IsNullOrWhiteSpace(source))
+    {
+        filterColumns.Add(new {field = "Source.Name", matchCase = false, @operator = "startswith", predicate = "and", value = source});
+    }
+
+    if (!string.IsNullOrWhiteSpace(description))
+    {
+        filterColumns.Add(new {field = "Description", matchCase = false, @operator = "startswith", predicate = "and", value = description});
+    }
 }
 
 <ejs-grid id="Grid" dataSource="@Model"
@@ -8,7 +23,7 @@
           toolbar="@(new List<string> {"Search"})" allowTextWrap="true"
           allowPaging="true" allowSorting="true" allowFiltering="true" load="onload">
     <e-grid-pagesettings pageSize="50" pageSizes="@(new[] {"50", "100", "200", "500", "1000", "All"})"></e-grid-pagesettings>
-    <e-grid-filtersettings type="Excel"></e-grid-filtersettings>
+    <e-grid-filtersettings type="Excel" columns="@filterColumns"/>
     <e-grid-sortsettings columns="@(new[] {new {field = "Date", direction = "Ascending"}})"></e-grid-sortsettings>
     <e-grid-searchsettings fields="@(new[] {"Date", "Type", "Source", "Destination", "Tag", "Note", "Amount"})"></e-grid-searchsettings>
     <e-grid-columns>
