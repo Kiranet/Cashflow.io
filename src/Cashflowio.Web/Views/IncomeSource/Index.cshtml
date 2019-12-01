@@ -3,9 +3,9 @@
 @inject IRepository Repository
 @{
     ViewData["Title"] = "Income Source";
-    var concepts = JsonConvert.SerializeObject(new List<Concept>
+    var concepts = JsonConvert.SerializeObject(new List<IncomeBreakdown>
     {
-        new Concept
+        new IncomeBreakdown
         {
             PayDay = DayOfWeek.Friday,
             Recurrence = Recurrence.Weekly,

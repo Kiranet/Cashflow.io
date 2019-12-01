@@ -121,5 +121,37 @@ namespace Cashflowio.Web.Controllers
 
             return View(_repository.List<Income>());
         }
+
+        public IActionResult Expense()
+        {
+            var expensesNotProcessed = _repository.List<RawTransaction>()
+                .Where(rt => rt.Type == nameof(Expense) && !rt.IsProcessed).ToList();
+
+            var newExpenseCategories = expensesNotProcessed
+                .Select(x => x.Destination).Distinct()
+                .Select(x => new ExpenseCategory {Name = x});
+
+            var expenseCategories = _repository.List<ExpenseCategory>().ToList();
+
+            foreach (var expenseCategory in newExpenseCategories)
+            {
+                if (expenseCategories.Find(x => x.Name == expenseCategory.Name) == null)
+                    _repository.Add(expenseCategory);
+            }
+            
+            var newConcepts = expensesNotProcessed
+                .Select(x => x.Tag).Distinct()
+                .Select(x => new Concept {Name = x});
+
+            var concepts = _repository.List<Concept>().ToList();
+
+            foreach (var concept in newConcepts)
+            {
+                if (concepts.Find(x => x.Name == concept.Name) == null)
+                    _repository.Add(concept);
+            }
+
+            return View(_repository.List<Concept>());
+        }
     }
 }

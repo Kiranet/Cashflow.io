@@ -2,7 +2,7 @@
 
 namespace Cashflowio.Core.Entities
 {
-    public class Concept : BaseEntity, INameable
+    public class ExpenseCategory : BaseEntity, INameable
     {
         public string Name { get; set; }
     }

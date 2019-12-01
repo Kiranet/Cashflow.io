@@ -21,7 +21,10 @@ namespace Cashflowio.Core.Entities
 
         public string Concepts { get; set; }
 
-        public List<Concept> GeneratedConcepts => JsonConvert.DeserializeObject<List<Concept>>(Concepts);
+        [JsonIgnore]
+        public IEnumerable<Income> Income { get; set; }
+        
+        public List<IncomeBreakdown> GeneratedConcepts => JsonConvert.DeserializeObject<List<IncomeBreakdown>>(Concepts);
 
         public List<Income> GenerateIncome()
         {

@@ -3,7 +3,12 @@ using Cashflowio.Core.SharedKernel;
 
 namespace Cashflowio.Core.Entities
 {
-    public abstract class Account : BaseEntity
+    public interface INameable
+    {
+        string Name { get; set; }
+    }
+
+    public abstract class Account : BaseEntity, INameable
     {
         public string Name { get; set; }
         public string Currency { get; set; }
