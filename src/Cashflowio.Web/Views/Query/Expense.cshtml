@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Concept>
+﻿@model IEnumerable<Expense>
 @{
     ViewData["Title"] = "Expense";
 
@@ -25,22 +25,25 @@
     <e-grid-pagesettings pageSize="50" pageSizes="@(new[] {"50", "100", "200", "500", "1000", "All"})"></e-grid-pagesettings>
     <e-grid-filtersettings type="Excel"/>
     @* <e-grid-filtersettings type="Excel" columns="@filterColumns"/> *@
-    @* <e-grid-sortsettings columns="@(new[] {new {field = "Date", direction = "Ascending"}})"></e-grid-sortsettings> *@
-    @* <e-grid-searchsettings fields="@(new[] {"Date", "Type", "Source", "Destination", "Tag", "Note", "Amount"})"></e-grid-searchsettings> *@
+    <e-grid-sortsettings columns="@(new[] {new {field = "Date", direction = "Ascending"}})"></e-grid-sortsettings>
+    <e-grid-searchsettings fields="@(new[] {"Date", "Concept", "Source", "Destination", "Amount"})"></e-grid-searchsettings>
     <e-grid-columns>
-        @* <e-grid-column field="@nameof(Income.Date)" headerText="Date" width="100" textAlign="Center"></e-grid-column> *@
-        <e-grid-column field="@nameof(ExpenseCategory.Name)" headerText="Name" width="100" textAlign="Center"></e-grid-column>
-        @* <e-grid-column field="Destination.Name" headerText="Destination" width="100" textAlign="Center"></e-grid-column> *@
-        @* <e-grid-column field="@nameof(Income.Description)" headerText="Description" width="200" textAlign="Center"></e-grid-column> *@
-        @* <e-grid-column field="@nameof(Income.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column> *@
+        <e-grid-column field="@nameof(Expense.Date)" headerText="Date" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Source.Name" headerText="Source" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Destination.Name" headerText="Destination" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Concept.Name" headerText="Concept" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(Expense.Description)" headerText="Description" width="200" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(Expense.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+        <e-grid-column field="@nameof(Expense.Currency)" headerText="Currency" textAlign="Right" width="100"></e-grid-column>
+        <e-grid-column field="ExchangeRate.Value" headerText="Exchange Rate" width="100" type="number" textAlign="Right"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
 
-@* @section Scripts{ *@
-@*     <script> *@
-@*         function onload() { *@
-@*             this.columns[0].format = *@
-@*                 { type: 'date', format: 'ccc dd MMM yy' }; *@
-@*         } *@
-@*     </script> *@
-@* } *@
+@section Scripts{
+    <script>
+        function onload() {
+            this.columns[0].format =
+                { type: 'date', format: 'ccc dd MMM yy' };
+        }
+    </script>
+}

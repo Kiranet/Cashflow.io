@@ -26,4 +26,16 @@ namespace Cashflowio.Core.Entities
         public int RawTransactionId { get; set; }
         public RawTransaction RawTransaction { get; set; }
     }
+
+    interface IMoneyOutflow
+    {
+        int SourceId { get; set; }
+        MoneyAccount Source { get; set; }
+
+        int DestinationId { get; set; }
+        ExpenseCategory Destination { get; set; }
+
+        int ConceptId { get; set; }
+        Concept Concept { get; set; }
+    }
 }

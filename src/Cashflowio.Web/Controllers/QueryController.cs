@@ -124,10 +124,66 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Expense()
         {
-            var expensesNotProcessed = _repository.List<RawTransaction>()
+            foreach (var expense in GetExpenseFromRawTransactions())
+            {
+                var newExpense = _repository.Add(expense);
+                if (newExpense.Id == 0)
+                    throw new Exception($"{JsonConvert.SerializeObject(newExpense)}");
+
+                var rawTransaction = _repository.GetById<RawTransaction>(newExpense.RawTransactionId);
+                rawTransaction.IsProcessed = true;
+                _repository.Update(rawTransaction);
+            }
+
+            return View(_repository.List<Expense>());
+        }
+
+        private IEnumerable<Expense> GetExpenseFromRawTransactions()
+        {
+            var rawTransactions = _repository.List<RawTransaction>()
                 .Where(rt => rt.Type == nameof(Expense) && !rt.IsProcessed).ToList();
 
-            var newExpenseCategories = expensesNotProcessed
+            UpdateExpenseCategoriesAndConcepts(rawTransactions);
+
+            var moneyAccountsByName = _repository.List<MoneyAccount>().ToDictionary(x => x.Name);
+            var expenseCategoriesByName = _repository.List<ExpenseCategory>().ToDictionary(x => x.Name);
+            var conceptsByName = _repository.List<Concept>().ToDictionary(x => x.Name);
+            var exchangeRates = _repository.List<ExchangeRate>().OrderBy(x => x.Date).ToList();
+
+            var expenses = rawTransactions
+                .Select(rt =>
+                {
+                    moneyAccountsByName.TryGetValue(rt.Source, out var sourceFound);
+                    expenseCategoriesByName.TryGetValue(rt.Destination, out var destinationFound);
+                    conceptsByName.TryGetValue(rt.Tag, out var conceptFound);
+
+                    var expense = new Expense
+                    {
+                        RawTransactionId = rt.Id,
+                        Amount = rt.Amount,
+                        Date = rt.Date,
+                        Description = rt.Note,
+                        Currency = rt.Currency
+                    };
+
+
+                    expense.ExchangeRate = rt.Currency == Currency.USD.ToString()
+                        ? exchangeRates.Find(x => x.Date >= expense.Date)
+                        : null;
+
+                    expense.SourceId = sourceFound?.Id ?? 0;
+                    expense.DestinationId = destinationFound?.Id ?? 0;
+                    expense.ConceptId = conceptFound?.Id ?? 0;
+
+                    return expense;
+                });
+
+            return expenses;
+        }
+
+        private void UpdateExpenseCategoriesAndConcepts(List<RawTransaction> expenses)
+        {
+            var newExpenseCategories = expenses
                 .Select(x => x.Destination).Distinct()
                 .Select(x => new ExpenseCategory {Name = x});
 
@@ -138,8 +194,8 @@ namespace Cashflowio.Web.Controllers
                 if (expenseCategories.Find(x => x.Name == expenseCategory.Name) == null)
                     _repository.Add(expenseCategory);
             }
-            
-            var newConcepts = expensesNotProcessed
+
+            var newConcepts = expenses
                 .Select(x => x.Tag).Distinct()
                 .Select(x => new Concept {Name = x});
 
@@ -150,8 +206,6 @@ namespace Cashflowio.Web.Controllers
                 if (concepts.Find(x => x.Name == concept.Name) == null)
                     _repository.Add(concept);
             }
-
-            return View(_repository.List<Concept>());
         }
     }
 }
