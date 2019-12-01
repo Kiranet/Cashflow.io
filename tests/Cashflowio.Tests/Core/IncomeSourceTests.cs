@@ -14,9 +14,9 @@ namespace Cashflowio.Tests.Core
         public void SetupAndGetIncome()
         {
             var dateOfReference = new DateTime(2019, 11, 1);
-            var concepts = JsonConvert.SerializeObject(new List<Concept>
+            var concepts = JsonConvert.SerializeObject(new List<IncomeBreakdown>
             {
-                new Concept
+                new IncomeBreakdown
                 {
                     Amount = 4200,
                     Destination = FakeRepository.First(AccountType.Debit),

@@ -4,14 +4,16 @@ using Cashflowio.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cashflowio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191201185512_ExpenseCategories")]
+    partial class ExpenseCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,21 +51,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.ToTable("Binnacle");
                 });
 
-            modelBuilder.Entity("Cashflowio.Core.Entities.Concept", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Concepts");
-                });
-
             modelBuilder.Entity("Cashflowio.Core.Entities.ExchangeRate", b =>
                 {
                     b.Property<int>("Id")
@@ -86,55 +73,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ExchangeRates");
-                });
-
-            modelBuilder.Entity("Cashflowio.Core.Entities.Expense", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ConceptId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Currency")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DestinationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ExchangeRateId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RawTransactionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SourceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConceptId");
-
-                    b.HasIndex("DestinationId");
-
-                    b.HasIndex("ExchangeRateId");
-
-                    b.HasIndex("RawTransactionId");
-
-                    b.HasIndex("SourceId");
-
-                    b.ToTable("Expenses");
                 });
 
             modelBuilder.Entity("Cashflowio.Core.Entities.ExpenseCategory", b =>
@@ -325,37 +263,6 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasIndex("SourceId");
 
                     b.ToTable("Transfers");
-                });
-
-            modelBuilder.Entity("Cashflowio.Core.Entities.Expense", b =>
-                {
-                    b.HasOne("Cashflowio.Core.Entities.Concept", "Concept")
-                        .WithMany()
-                        .HasForeignKey("ConceptId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cashflowio.Core.Entities.ExpenseCategory", "Destination")
-                        .WithMany()
-                        .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cashflowio.Core.Entities.ExchangeRate", "ExchangeRate")
-                        .WithMany()
-                        .HasForeignKey("ExchangeRateId");
-
-                    b.HasOne("Cashflowio.Core.Entities.RawTransaction", "RawTransaction")
-                        .WithMany()
-                        .HasForeignKey("RawTransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cashflowio.Core.Entities.MoneyAccount", "Source")
-                        .WithMany()
-                        .HasForeignKey("SourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Cashflowio.Core.Entities.Income", b =>

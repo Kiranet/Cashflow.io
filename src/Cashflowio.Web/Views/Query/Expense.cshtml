@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Expense>
+@{
+    ViewData["Title"] = "Expense";
+
+    //    var source = Context.Request.Query["source"].ToString();
+    //    var description = Context.Request.Query["description"].ToString();
+    //
+    //    var filterColumns = new List<object>();
+    //
+    //    if (!string.IsNullOrWhiteSpace(source))
+    //    {
+    //        filterColumns.Add(new {field = "Source.Name", matchCase = false, @operator = "startswith", predicate = "and", value = source});
+    //    }
+    //
+    //    if (!string.IsNullOrWhiteSpace(description))
+    //    {
+    //        filterColumns.Add(new {field = "Description", matchCase = false, @operator = "startswith", predicate = "and", value = description});
+    //    }
+}
+
+<ejs-grid id="Grid" dataSource="@Model"
+          enableHover="false" height="420" width="auto" allowSelection="false"
+          toolbar="@(new List<string> {"Search"})" allowTextWrap="true"
+          allowPaging="true" allowSorting="true" allowFiltering="true" load="onload">
+    <e-grid-pagesettings pageSize="50" pageSizes="@(new[] {"50", "100", "200", "500", "1000", "All"})"></e-grid-pagesettings>
+    <e-grid-filtersettings type="Excel"/>
+    @* <e-grid-filtersettings type="Excel" columns="@filterColumns"/> *@
+    <e-grid-sortsettings columns="@(new[] {new {field = "Date", direction = "Ascending"}})"></e-grid-sortsettings>
+    <e-grid-searchsettings fields="@(new[] {"Date", "Concept", "Source", "Destination", "Amount"})"></e-grid-searchsettings>
+    <e-grid-columns>
+        <e-grid-column field="@nameof(Expense.Date)" headerText="Date" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Source.Name" headerText="Source" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Destination.Name" headerText="Destination" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Concept.Name" headerText="Concept" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(Expense.Description)" headerText="Description" width="200" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(Expense.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+        <e-grid-column field="@nameof(Expense.Currency)" headerText="Currency" textAlign="Right" width="100"></e-grid-column>
+        <e-grid-column field="ExchangeRate.Value" headerText="Exchange Rate" width="100" type="number" textAlign="Right"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+@section Scripts{
+    <script>
+        function onload() {
+            this.columns[0].format =
+                { type: 'date', format: 'ccc dd MMM yy' };
+        }
+    </script>
+}
