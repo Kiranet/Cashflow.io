@@ -4,9 +4,9 @@ namespace Cashflowio.Web.Controllers
 {
     public class DashboardController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(int year)
         {
-            return View();
+            return View(year);
         }
     }
 }

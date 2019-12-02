@@ -17,7 +17,7 @@ namespace Cashflowio.Web.Controllers
             _repository = repository;
         }
 
-        public IActionResult Transfer()
+        public IActionResult Transfer(int year)
         {
             foreach (var transfer in GetTransfersFromRawTransactions())
             {
@@ -30,7 +30,12 @@ namespace Cashflowio.Web.Controllers
                 _repository.Update(rawTransaction);
             }
 
-            return View(_repository.List<Transfer>());
+            var transfers = _repository.List<Transfer>();
+
+            if (year != 0)
+                transfers = transfers.Where(x => x.Date.Year == year).ToList();
+
+            return View(transfers);
         }
 
         private IEnumerable<Transfer> GetTransfersFromRawTransactions()
@@ -106,7 +111,7 @@ namespace Cashflowio.Web.Controllers
             return income;
         }
 
-        public IActionResult Income()
+        public IActionResult Income(int year)
         {
             foreach (var income in GetIncomeFromRawTransactions())
             {
@@ -119,10 +124,15 @@ namespace Cashflowio.Web.Controllers
                 _repository.Update(rawTransaction);
             }
 
-            return View(_repository.List<Income>());
+            var incomes = _repository.List<Income>();
+
+            if (year != 0)
+                incomes = incomes.Where(x => x.Date.Year == year).ToList();
+
+            return View(incomes);
         }
 
-        public IActionResult Expense()
+        public IActionResult Expense(int year)
         {
             foreach (var expense in GetExpenseFromRawTransactions())
             {
@@ -135,7 +145,12 @@ namespace Cashflowio.Web.Controllers
                 _repository.Update(rawTransaction);
             }
 
-            return View(_repository.List<Expense>());
+            var expenses = _repository.List<Expense>();
+
+            if (year != 0)
+                expenses = expenses.Where(x => x.Date.Year == year).ToList();
+
+            return View(expenses);
         }
 
         private IEnumerable<Expense> GetExpenseFromRawTransactions()
