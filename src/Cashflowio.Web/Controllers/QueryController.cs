@@ -196,9 +196,9 @@ namespace Cashflowio.Web.Controllers
             return expenses;
         }
 
-        private void UpdateExpenseCategoriesAndConcepts(List<RawTransaction> expenses)
+        private void UpdateExpenseCategoriesAndConcepts(List<RawTransaction> transactions)
         {
-            var newExpenseCategories = expenses
+            var newExpenseCategories = transactions
                 .Select(x => x.Destination).Distinct()
                 .Select(x => new ExpenseCategory {Name = x});
 
@@ -210,7 +210,7 @@ namespace Cashflowio.Web.Controllers
                     _repository.Add(expenseCategory);
             }
 
-            var newConcepts = expenses
+            var newConcepts = transactions
                 .Select(x => x.Tag).Distinct()
                 .Select(x => new Concept {Name = x});
 
@@ -221,6 +221,57 @@ namespace Cashflowio.Web.Controllers
                 if (concepts.Find(x => x.Name == concept.Name) == null)
                     _repository.Add(concept);
             }
+        }
+
+        public IActionResult Credit(int year)
+        {
+            foreach (var creditCharge in GetCreditChargesFromRawTransactions())
+            {
+                var newCreditCharge = _repository.Add(creditCharge);
+                if (newCreditCharge.Id == 0)
+                    throw new Exception($"{JsonConvert.SerializeObject(newCreditCharge)}");
+
+                var rawTransaction = _repository.GetById<RawTransaction>(newCreditCharge.RawTransactionId);
+                rawTransaction.IsProcessed = true;
+                _repository.Update(rawTransaction);
+            }
+
+            var creditCharges = _repository.List<CreditCharge>();
+
+            if (year != 0)
+                creditCharges = creditCharges.Where(x => x.Date.Year == year).ToList();
+
+            return View(creditCharges);
+        }
+
+        private IEnumerable<CreditCharge> GetCreditChargesFromRawTransactions()
+        {
+            var rawTransactions = _repository.List<RawTransaction>()
+                .Where(rt => rt.Type == nameof(Credit) && !rt.IsProcessed).ToList();
+
+            UpdateExpenseCategoriesAndConcepts(rawTransactions);
+
+            var moneyAccountsByName = _repository.List<MoneyAccount>().ToDictionary(x => x.Name);
+            var expenseCategoriesByName = _repository.List<ExpenseCategory>().ToDictionary(x => x.Name);
+            var conceptsByName = _repository.List<Concept>().ToDictionary(x => x.Name);
+
+            return rawTransactions.Select(x =>
+            {
+                moneyAccountsByName.TryGetValue(x.Source, out var sourceFound);
+                expenseCategoriesByName.TryGetValue(x.Destination, out var destinationFound);
+                conceptsByName.TryGetValue(x.Tag, out var conceptFound);
+
+                return new CreditCharge
+                {
+                    RawTransactionId = x.Id,
+                    Date = x.Date,
+                    Amount = x.Amount,
+                    Description = x.Note,
+                    SourceId = sourceFound?.Id ?? 0,
+                    DestinationId = destinationFound?.Id ?? 0,
+                    ConceptId = conceptFound?.Id ?? 0
+                };
+            });
         }
     }
 }

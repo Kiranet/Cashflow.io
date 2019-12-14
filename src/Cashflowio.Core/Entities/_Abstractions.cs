@@ -38,4 +38,13 @@ namespace Cashflowio.Core.Entities
         int ConceptId { get; set; }
         Concept Concept { get; set; }
     }
+
+    interface ICashflow
+    {
+        int SourceId { get; set; }
+        MoneyAccount Source { get; set; }
+
+        int DestinationId { get; set; }
+        MoneyAccount Destination { get; set; }
+    }
 }
