@@ -223,7 +223,7 @@ namespace Cashflowio.Web.Controllers
             }
         }
 
-        public IActionResult Credit(int year)
+        public IActionResult Credit(int id, int year)
         {
             foreach (var creditCharge in GetCreditChargesFromRawTransactions())
             {
@@ -237,7 +237,7 @@ namespace Cashflowio.Web.Controllers
             }
 
             var creditCharges = _repository.List<CreditCharge>();
-
+            
             if (year != 0)
                 creditCharges = creditCharges.Where(x => x.Date.Year == year).ToList();
 
@@ -272,6 +272,93 @@ namespace Cashflowio.Web.Controllers
                     ConceptId = conceptFound?.Id ?? 0
                 };
             });
+        }
+
+        public IActionResult Payment(int id, int year)
+        {
+            foreach (var creditPayment in GetCreditPaymentsFromRawTransactions())
+            {
+                creditPayment.Id = 0;
+                var newCreditPayment = _repository.Add(creditPayment);
+                if (newCreditPayment.Id == 0)
+                    throw new Exception($"{JsonConvert.SerializeObject(newCreditPayment)}");
+
+                var rawTransaction = _repository.GetById<RawTransaction>(newCreditPayment.RawTransactionId);
+                rawTransaction.IsProcessed = true;
+                _repository.Update(rawTransaction);
+            }
+
+            var creditPayments = _repository.List<CreditPayment>();
+
+            if (id != 0)
+                creditPayments = creditPayments.Where(x => x.CreditChargeId == id).ToList();
+
+            if (year != 0)
+                creditPayments = creditPayments.Where(x => x.Date.Year == year).ToList();
+
+            return View(creditPayments);
+        }
+
+        private IEnumerable<CreditPayment> GetCreditPaymentsFromRawTransactions()
+        {
+            var rawTransactions = _repository.List<RawTransaction>()
+                .Where(rt => rt.Type == nameof(Payment) && !rt.IsProcessed).ToList();
+
+            var expenseCategory = _repository.List<ExpenseCategory>().ToList();
+            var creditCharges = _repository.ListWithNoTracking<CreditCharge>().OrderByDescending(x => x.Date).ToList();
+            var conceptsNamesById = _repository.List<Concept>().ToDictionary(x => x.Id, x => x.Name);
+            var creditPayments = new List<CreditPayment>();
+
+            var moneyAccountsByName = _repository.List<MoneyAccount>().ToDictionary(x => x.Name);
+            var destinationNamesById = _repository.List<ExpenseCategory>().ToDictionary(x => x.Id, x => x.Name);
+
+            foreach (var rt in rawTransactions)
+            {
+                moneyAccountsByName.TryGetValue(rt.Source, out var sourceFound);
+                moneyAccountsByName.TryGetValue(rt.Destination, out var destinationFound);
+
+                var containsExpenseCategory = expenseCategory.Any(x => rt.Note.Contains(x.Name));
+
+                var creditCharge = new CreditCharge();
+
+                if (containsExpenseCategory)
+                {
+                    creditCharge = creditCharges.Find(x =>
+                        !x.IsPaid
+                        && rt.Amount <= x.Amount
+                        && rt.Date >= x.Date
+                        && conceptsNamesById[x.ConceptId] == rt.Tag
+                        && rt.Note.Contains(destinationNamesById[x.DestinationId]));
+                }
+                else
+                {
+                    creditCharge = creditCharges.Find(x =>
+                        !x.IsPaid
+                        && rt.Amount <= x.Amount
+                        && rt.Date >= x.Date
+                        && conceptsNamesById[x.ConceptId] == rt.Tag);
+                }
+
+                var creditPayment = new CreditPayment
+                {
+                    RawTransactionId = rt.Id,
+                    Date = rt.Date,
+                    Amount = rt.Amount,
+                    Description = rt.Note,
+                    SourceId = sourceFound?.Id ?? 0,
+                    DestinationId = destinationFound?.Id ?? 0,
+                    CreditChargeId = creditCharge?.Id
+                };
+
+                var indexOf = creditCharges.IndexOf(creditCharge);
+
+                if (indexOf > 0)
+                    creditCharges[indexOf].Payments.Add(creditPayment);
+
+                creditPayments.Add(creditPayment);
+            }
+
+            return creditPayments;
         }
     }
 }
