@@ -4,14 +4,16 @@ using Cashflowio.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cashflowio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191212143720_CreditChargeAndPayment")]
+    partial class CreditChargeAndPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,7 +122,7 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<int?>("CreditChargeId")
+                    b.Property<int>("CreditChargeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -454,7 +456,9 @@ namespace Cashflowio.Infrastructure.Migrations
                 {
                     b.HasOne("Cashflowio.Core.Entities.CreditCharge", "CreditCharge")
                         .WithMany("Payments")
-                        .HasForeignKey("CreditChargeId");
+                        .HasForeignKey("CreditChargeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Cashflowio.Core.Entities.MoneyAccount", "Destination")
                         .WithMany()

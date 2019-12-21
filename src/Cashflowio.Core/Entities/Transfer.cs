@@ -1,6 +1,6 @@
 ﻿namespace Cashflowio.Core.Entities
 {
-    public class Transfer : Transaction
+    public class Transfer : Transaction, ICashflow
     {
         public int SourceId { get; set; }
         public MoneyAccount Source { get; set; }

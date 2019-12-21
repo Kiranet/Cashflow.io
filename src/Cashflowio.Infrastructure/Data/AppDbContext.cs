@@ -24,5 +24,7 @@ namespace Cashflowio.Infrastructure.Data
         public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
         public DbSet<Concept> Concepts { get; set; }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<CreditCharge> CreditCharges { get; set; }
+        public DbSet<CreditPayment> CreditPayments { get; set; }
     }
 }

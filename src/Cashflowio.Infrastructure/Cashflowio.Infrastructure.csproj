@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20191108221909_IncomeSources.Designer.cs" />
     <Compile Remove="Migrations\20191118232412_ConvertirEnumsAStrings2.cs" />
     <Compile Remove="Migrations\20191118232412_ConvertirEnumsAStrings2.Designer.cs" />
+    <Compile Remove="Migrations\20191212143007_CreditChargeAndPayment.cs" />
+    <Compile Remove="Migrations\20191212143007_CreditChargeAndPayment.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
