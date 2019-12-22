@@ -29,7 +29,6 @@
 
 <form id="yearForm" asp-action="Index" class="form-inline">
     <div class="form-group">
-        <label for="Year">Filter by year</label>
         <select id="Year" name="Year" asp-items="@years" onchange="$('#yearForm').submit()">
             <option value="0">None</option>
         </select>
@@ -89,47 +88,102 @@
         var transferReceivedByType = received.GroupBy(x => x.Source.Name)
             .OrderByDescending(g => g.Sum(i => i.Amount));
 
-        <div class="col-md-4">
+        dynamic o = new
+        {
+            AccountName = moneyAccount.Name,
+            Balance = balance.ToString("C0"),
+            Description = "",
+            Source = "",
+            Destination = "",
+            Icon = "",
+            Amount = "",
+            ConceptName = ""
+        };
+
+        <div class="col-md-12">
             <div class="info-box bg-warning">
-                <span class="info-box-icon">
-                    <i class="fas fa-box"></i>
-                </span>
                 <div class="info-box-content">
-                    <span class="info-box-text">@moneyAccount.Name</span>
+                    <span class="info-box-text">@o.AccountName</span>
                     <span class="info-box-number">
-                        @balance.ToString("C0")
+                        @o.Balance
                     </span>
-                    <span class="progress-description progress-description d-flex align-content-start flex-wrap">
+                    <div class="row mt-2">
+                        @{
+                            var list = new List<dynamic>();
+                        }
                         @foreach (var group in transferReceivedByType)
                         {
-                            <a class="btn btn-warning" target="_blank"
-                               asp-action="Transfer" asp-controller="Query" asp-route-year="@selectedYear"
-                               asp-route-source="@group.Key" asp-route-destination="@moneyAccount.Name">
-                                @group.Key
-                                <span class="badge badge-light">
-                                    <i class="fas fa-angle-down text-success"></i>
-                                    @group.Sum(x => x.Amount).ToString("C0")
-                                </span>
-                            </a>
+                            o = new
+                            {
+                                Icon = "fa-angle-down text-success",
+                                Amount = group.Sum(x => x.Amount).ToString("C0"),
+                                ConceptName = group.Key,
+                                Source = group.Key,
+                                Destination = moneyAccount.Name,
+                                Description = "Received"
+                            };
+
+                            list.Add(o);
                         }
 
                         @foreach (var group in transferSentByType)
                         {
-                            <a class="btn btn-warning" target="_blank"
-                               asp-action="Transfer" asp-controller="Query" asp-route-year="@selectedYear"
-                               asp-route-source="@moneyAccount.Name" asp-route-destination="@group.Key">
-                                @group.Key
-                                <span class="badge badge-light">
-                                    <i class="fas fa-angle-up text-danger"></i>
-                                    @group.Sum(x => x.Amount).ToString("C0")
-                                </span>
-                            </a>
+                            o = new
+                            {
+                                Icon = "fa-angle-up text-danger",
+                                Amount = group.Sum(x => x.Amount).ToString("C0"),
+                                ConceptName = group.Key,
+                                Source = moneyAccount.Name,
+                                Destination = group.Key,
+                                Description = "Sent"
+                            };
+
+                            list.Add(o);
                         }
-                    </span>
+
+                        @foreach (var x in list.GroupBy(x => x.Icon))
+                        {
+                            <div class="col">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                    <tr>
+                                    <th>
+                                        <i class="fas @x.First().Icon"></i>
+                                    </th>
+                                    <th>@x.First().Description</th>
+                                    <th></th>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var y in x)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @y.ConceptName
+                                            </td>
+                                            <td class="text-right">
+                                                <span class="badge badge-light">
+                                                    @y.Amount
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-warning" target="_blank"
+                                                   asp-action="Transfer" asp-controller="Query" asp-route-year="@selectedYear"
+                                                   asp-route-source="@y.Source" asp-route-destination="@y.Destination">
+                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
     }
+
 </div>
 
 <div class="row">
@@ -141,33 +195,76 @@
             .OrderByDescending(g => g.Sum(x => x.ExchangeRate == null ?
                 x.Amount : x.Amount * x.ExchangeRate.Value));
 
-        <div class="col-3">
+        <div class="col-6">
             <div class="info-box bg-danger">
-                <span class="info-box-icon">
-                    <i class="fas fa-shopping-bag"></i>
-                </span>
                 <div class="info-box-content">
                     <span class="info-box-text">@expenseCategory.Name</span>
                     <span class="info-box-number">
                         -@expensesFromCategory.Sum(x => x.ExchangeRateId == null ?
                              x.Amount : x.Amount * exchangeRateById[x.ExchangeRateId.Value]).ToString("C0")
                     </span>
-                    <div class="progress-description d-flex align-content-start flex-wrap">
-                        @foreach (var group in expensesByConcept)
-                        {
-                            <a class="btn btn-danger" target="_blank"
-                               asp-action="Expense" asp-controller="Query" asp-route-year="@selectedYear"
-                               asp-route-concept="@group.Key" asp-route-destination="@expenseCategory.Name">
-                                @group.Key
-                                <span class="badge badge-light">
-                                    @group.Sum(x => x.ExchangeRate == null ?
-                                        x.Amount : x.Amount * x.ExchangeRate.Value).ToString("C0")
-                                </span>
-                            </a>
-                        }
+                    <div class="row">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Concept
+                                </th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var group in expensesByConcept)
+                            {
+                                <tr>
+                                    <td>
+                                        @group.Key
+                                    </td>
+                                    <td class="text-right">
+                                        <span class="badge badge-light">
+                                            @group.Sum(x => x.ExchangeRate == null ?
+                                                x.Amount : x.Amount * x.ExchangeRate.Value).ToString("C0")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-danger" target="_blank"
+                                           asp-action="Expense" asp-controller="Query" asp-route-year="@selectedYear"
+                                           asp-route-concept="@group.Key" asp-route-destination="@expenseCategory.Name">
+                                            <i class="fas fa-money-check"></i>
+                                        </a>
+
+                                        <a class="btn btn-danger" target="_blank"
+                                           asp-action="Credit" asp-controller="Query" asp-route-year="@selectedYear"
+                                           asp-route-concept="@group.Key" asp-route-destination="@expenseCategory.Name">
+                                            <i class="fas fa-credit-card"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     }
 </div>
+
+@section scripts
+{
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.table').DataTable({
+            bLengthChange : false,
+            pageLength : 5
+        });
+    } );
+    </script>
+}
+
+@section styles{
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"/>
+}
