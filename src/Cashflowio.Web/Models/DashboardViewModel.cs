@@ -6,7 +6,7 @@ namespace Cashflowio.Web.Models
     public class DashboardViewModel
     {
         public SelectList Years { get; set; }
-        public int SelectedYear { get; set; }
+        public int Year { get; set; }
         public List<IncomeSourceViewModel> Income { get; set; } = new List<IncomeSourceViewModel>();
         public List<MoneyAccountViewModel> MoneyAccounts { get; set; } = new List<MoneyAccountViewModel>();
         public List<ExpenseCategoryViewModel> ExpenseCategories { get; set; } = new List<ExpenseCategoryViewModel>();
@@ -40,6 +40,8 @@ namespace Cashflowio.Web.Models
         public string Source { get; set; }
         public string Destination { get; set; }
         public string Description { get; set; }
+        
+        public int Count { get; set; }
     }
 
     public class ExpenseCategoryViewModel
@@ -53,5 +55,7 @@ namespace Cashflowio.Web.Models
     {
         public string Description { get; set; }
         public double Amount { get; set; }
+        public int ExpenseCount { get; set; }
+        public int CreditCount { get; set; }
     }
 }

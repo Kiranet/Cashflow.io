@@ -36,20 +36,25 @@ namespace Cashflowio.Web.Services
         public DashboardViewModel QueryData(int selectedYear)
         {
             var income = Transactions.Where(x => x is Income).Cast<Income>().ToList();
+            var years = income.Select(x => x.Date.Year).Distinct().OrderByDescending(x => x);
             var vm = new DashboardViewModel
             {
-                Years = new SelectList(income.Select(x => x.Date.Year).Distinct(), selectedYear),
-                SelectedYear = selectedYear
+                Years = new SelectList(years, selectedYear),
+                Year = selectedYear
             };
 
             var transfers = Transactions.Where(x => x is Transfer).Cast<Transfer>().ToList();
             var expenses = Transactions.Where(x => x is Expense).Cast<Expense>().ToList();
+            var creditCharges = Transactions.Where(x => x is CreditCharge).Cast<CreditCharge>().ToList();
+            var creditPayments = Transactions.Where(x => x is CreditPayment).Cast<CreditPayment>().ToList();
 
             if (selectedYear != 0)
             {
                 income = income.Where(x => x.Date.Year == selectedYear).ToList();
                 transfers = transfers.Where(x => x.Date.Year == selectedYear).ToList();
                 expenses = expenses.Where(x => x.Date.Year == selectedYear).ToList();
+                creditCharges = creditCharges.Where(x => x.Date.Year == selectedYear).ToList();
+                creditPayments = creditPayments.Where(x => x.Date.Year == selectedYear).ToList();
             }
 
             var moneyAccounts = _repository.List<MoneyAccount>().ToList();
@@ -71,16 +76,13 @@ namespace Cashflowio.Web.Services
                 foreach (var group in exitIncome.GroupBy(x => x.Description))
                     item.Concepts.Add(new IncomeConceptViewModel
                     {
-                        Description = @group.Key,
-                        Amount = @group.Sum(x => x.Amount)
+                        Description = group.Key,
+                        Amount = group.Sum(x => x.Amount)
                     });
 
                 vm.Income.Add(item);
             }
-
-            var creditCharges = Transactions.Where(x => x is CreditCharge).Cast<CreditCharge>().ToList();
-            var creditPayments = Transactions.Where(x => x is CreditPayment).Cast<CreditPayment>().ToList();
-
+            
             foreach (var moneyAccount in moneyAccounts)
             {
                 var incomeReceived = income.Where(x => x.DestinationId == moneyAccount.Id);
@@ -116,9 +118,10 @@ namespace Cashflowio.Web.Services
                     item.Concepts.Add(new MoneyAccountConceptViewModel
                     {
                         Icon = "fa-angle-down text-success",
-                        Amount = @group.Sum(x => x.Amount),
-                        Name = @group.Key,
-                        Source = @group.Key,
+                        Amount = group.Sum(x => x.Amount),
+                        Count = group.Count(),
+                        Name = group.Key,
+                        Source = group.Key,
                         Destination = moneyAccount.Name,
                         Description = "Received"
                     });
@@ -127,10 +130,11 @@ namespace Cashflowio.Web.Services
                     item.Concepts.Add(new MoneyAccountConceptViewModel
                     {
                         Icon = "fa-angle-up text-danger",
-                        Amount = @group.Sum(x => x.Amount),
-                        Name = @group.Key,
+                        Amount = group.Sum(x => x.Amount),
+                        Name = group.Key,
+                        Count = group.Count(),
                         Source = moneyAccount.Name,
-                        Destination = @group.Key,
+                        Destination = group.Key,
                         Description = "Sent"
                     });
 
@@ -157,6 +161,8 @@ namespace Cashflowio.Web.Services
                     item.Concepts.Add(new ExpenseConceptViewModel
                     {
                         Description = moneyOutflow.Key,
+                        ExpenseCount = moneyOutflow.Count(x => x is Expense),
+                        CreditCount = moneyOutflow.Count(x => x is CreditCharge),
                         Amount = moneyOutflow.Sum(x =>
                             x.ExchangeRate == null ? x.Amount : x.Amount * x.ExchangeRate.Value)
                     });

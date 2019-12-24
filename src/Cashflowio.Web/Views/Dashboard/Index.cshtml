@@ -5,13 +5,14 @@
     ViewBag.Title = "Dashboard";
 }
 
-<form id="yearForm" asp-action="Index" class="form-inline">
-    <div class="form-group">
-        <select id="Year" name="Year" asp-items="@Model.Years" onchange="$('#yearForm').submit()">
+@section filters
+{
+    <form id="yearForm" asp-action="Index" method="get" class="form-inline">
+        <select asp-for="Year" asp-items="@Model.Years" class="form-control" onchange="$('#yearForm').submit()">
             <option value="0">None</option>
         </select>
-    </div>
-</form>
+    </form>
+}
 
 <div class="row pt-3">
     @foreach (var income in Model.Income)
@@ -29,8 +30,8 @@
                     <div class="progress-description d-flex align-content-start flex-wrap">
                         @foreach (var concept in income.Concepts.OrderByDescending(x => x.Amount))
                         {
-                            <a class="btn btn-success" target="_blank"
-                               asp-action="Income" asp-controller="Query" asp-route-year="@Model.SelectedYear"
+                            <a class="btn btn-success"
+                               asp-action="Income" asp-controller="Query" asp-route-year="@Model.Year"
                                asp-route-source="@income.Name" asp-route-description="@concept.Description">
                                 @concept.Description
                                 <span class="badge badge-light">
@@ -49,12 +50,22 @@
     @foreach (var moneyAccount in Model.MoneyAccounts)
     {
         <div class="col-md-12">
-            <div class="info-box bg-info">
-                <div class="info-box-content">
-                    <span class="info-box-text">@moneyAccount.Name</span>
-                    <span class="info-box-number">
-                        @moneyAccount.Balance.ToString("C0")
-                    </span>
+            <div class="card bg-primary collapsed-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        @moneyAccount.Name
+                        <span class="badge badge-light">
+                            @moneyAccount.Balance.ToString("C0")
+                        </span>
+                    </h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
                     <div class="row mt-2">
                         @foreach (var group in moneyAccount.Concepts.GroupBy(x => new {x.Icon, x.Description}))
                         {
@@ -81,10 +92,10 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a class="btn btn-info" target="_blank"
-                                                   asp-action="Transfer" asp-controller="Query" asp-route-year="@Model.SelectedYear"
+                                                <a class="btn btn-primary tip" title="Transfers"
+                                                   asp-action="Transfer" asp-controller="Query" asp-route-year="@Model.Year"
                                                    asp-route-source="@concept.Source" asp-route-destination="@concept.Destination">
-                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                    <i class="fas fa-arrow-circle-right"></i> @concept.Count
                                                 </a>
                                             </td>
                                         </tr>
@@ -104,12 +115,22 @@
     @foreach (var expenseCategory in Model.ExpenseCategories.OrderByDescending(x => x.Amount))
     {
         <div class="col-6">
-            <div class="info-box bg-danger" style="height: 500px">
-                <div class="info-box-content">
-                    <span class="info-box-text">@expenseCategory.Name</span>
-                    <span class="info-box-number">
-                        -@expenseCategory.Amount.ToString("C0")
-                    </span>
+            <div class="card bg-danger">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        @expenseCategory.Name
+                        <span class="badge badge-light">
+                            -@expenseCategory.Amount.ToString("C0")
+                        </span>
+                    </h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
                     <div class="row">
                         <table class="table table-sm table-bordered">
                             <thead>
@@ -134,17 +155,23 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a class="btn btn-danger" target="_blank"
-                                           asp-action="Expense" asp-controller="Query" asp-route-year="@Model.SelectedYear"
-                                           asp-route-concept="@concept.Description" asp-route-destination="@expenseCategory.Name">
-                                            <i class="fas fa-money-check"></i>
-                                        </a>
+                                        @if (concept.ExpenseCount > 0)
+                                        {
+                                            <a class="btn btn-danger tip" title="Expenses"
+                                               asp-action="Expense" asp-controller="Query" asp-route-year="@Model.Year"
+                                               asp-route-concept="@concept.Description" asp-route-destination="@expenseCategory.Name">
+                                                <i class="fas fa-money-check"></i> @concept.ExpenseCount
+                                            </a>
+                                        }
 
-                                        <a class="btn btn-danger" target="_blank"
-                                           asp-action="Credit" asp-controller="Query" asp-route-year="@Model.SelectedYear"
-                                           asp-route-concept="@concept.Description" asp-route-destination="@expenseCategory.Name">
-                                            <i class="fas fa-credit-card"></i>
-                                        </a>
+                                        @if (concept.CreditCount > 0)
+                                        {
+                                            <a class="btn btn-danger tip" title="Credit Charges"
+                                               asp-action="Credit" asp-controller="Query" asp-route-year="@Model.Year"
+                                               asp-route-concept="@concept.Description" asp-route-destination="@expenseCategory.Name">
+                                                <i class="fas fa-credit-card"></i> @concept.CreditCount
+                                            </a>
+                                        }
                                     </td>
                                 </tr>
                             }
