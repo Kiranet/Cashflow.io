@@ -3,15 +3,10 @@ using Cashflowio.Core.SharedKernel;
 
 namespace Cashflowio.Core.Entities
 {
-    public interface INameable
-    {
-        string Name { get; set; }
-    }
-
     public abstract class Account : BaseEntity, INameable
     {
-        public string Name { get; set; }
         public string Currency { get; set; }
+        public string Name { get; set; }
     }
 
     public abstract class Transaction : BaseEntity
@@ -35,26 +30,5 @@ namespace Cashflowio.Core.Entities
         public ExpenseCategory Destination { get; set; }
         public int ConceptId { get; set; }
         public Concept Concept { get; set; }
-    }
-
-    interface IMoneyOutflow
-    {
-        int SourceId { get; set; }
-        MoneyAccount Source { get; set; }
-
-        int DestinationId { get; set; }
-        ExpenseCategory Destination { get; set; }
-
-        int ConceptId { get; set; }
-        Concept Concept { get; set; }
-    }
-
-    interface ICashflow
-    {
-        int SourceId { get; set; }
-        MoneyAccount Source { get; set; }
-
-        int DestinationId { get; set; }
-        MoneyAccount Destination { get; set; }
     }
 }

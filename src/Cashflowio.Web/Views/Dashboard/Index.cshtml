@@ -1,5 +1,5 @@
-﻿@using Cashflowio.Core.Interfaces
-@inject IRepository Repository
+﻿@inject IRepository Repository
+@using Cashflowio.Core.Interfaces
 @model DashboardViewModel
 @{
     ViewBag.Title = "Dashboard";
@@ -49,7 +49,7 @@
     @foreach (var moneyAccount in Model.MoneyAccounts)
     {
         <div class="col-md-12">
-            <div class="info-box bg-warning">
+            <div class="info-box bg-info">
                 <div class="info-box-content">
                     <span class="info-box-text">@moneyAccount.Name</span>
                     <span class="info-box-number">
@@ -81,7 +81,7 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a class="btn btn-warning" target="_blank"
+                                                <a class="btn btn-info" target="_blank"
                                                    asp-action="Transfer" asp-controller="Query" asp-route-year="@Model.SelectedYear"
                                                    asp-route-source="@concept.Source" asp-route-destination="@concept.Destination">
                                                     <i class="fas fa-arrow-circle-right"></i>
@@ -101,10 +101,10 @@
 </div>
 
 <div class="row">
-    @foreach (var expenseCategory in Model.ExpenseCategories)
+    @foreach (var expenseCategory in Model.ExpenseCategories.OrderByDescending(x => x.Amount))
     {
         <div class="col-6">
-            <div class="info-box bg-danger">
+            <div class="info-box bg-danger" style="height: 500px">
                 <div class="info-box-content">
                     <span class="info-box-text">@expenseCategory.Name</span>
                     <span class="info-box-number">

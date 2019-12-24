@@ -25,11 +25,6 @@ namespace Cashflowio.Infrastructure.Data
             return _dbContext.Set<T>().ToList();
         }
 
-        public List<T> ListWithNoTracking<T>() where T : BaseEntity
-        {
-            return _dbContext.Set<T>().AsNoTracking().ToList();
-        }
-
         public T Add<T>(T entity) where T : BaseEntity
         {
             _dbContext.Set<T>().Add(entity);

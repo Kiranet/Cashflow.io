@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Transfer>
 @{
     ViewData["Title"] = "Transfers";
-    
+
     var source = Context.Request.Query["source"].ToString();
     var destination = Context.Request.Query["destination"].ToString();
 

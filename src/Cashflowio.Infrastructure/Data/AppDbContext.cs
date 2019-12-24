@@ -9,13 +9,7 @@ namespace Cashflowio.Infrastructure.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<IncomeSource>().Ignore(x => x.GeneratedConcepts);
-        }
-
         public DbSet<RawTransaction> RawTransactions { get; set; }
-        public DbSet<Binnacle> Binnacle { get; set; }
         public DbSet<ExchangeRate> ExchangeRates { get; set; }
         public DbSet<MoneyAccount> MoneyAccounts { get; set; }
         public DbSet<IncomeSource> IncomeSources { get; set; }
@@ -26,5 +20,10 @@ namespace Cashflowio.Infrastructure.Data
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<CreditCharge> CreditCharges { get; set; }
         public DbSet<CreditPayment> CreditPayments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<IncomeSource>().Ignore(x => x.GeneratedConcepts);
+        }
     }
 }

@@ -40,7 +40,6 @@ namespace Cashflowio.Tests.Core
             var destinationAccount = FakeRepository.FirstOrNull(destination);
 
             if (sourceAccount == null || destinationAccount == null)
-            {
                 foreach (var accountType in EnumUtils.GetTypedValues<AccountType>())
                 {
                     var auxAccount = FakeRepository.First(accountType);
@@ -50,7 +49,6 @@ namespace Cashflowio.Tests.Core
                     else
                         Assert.Throws<Exception>(() => sourceAccount.TransferTo(auxAccount));
                 }
-            }
             else
                 Assert.Throws<Exception>(() => sourceAccount.TransferTo(destinationAccount));
         }

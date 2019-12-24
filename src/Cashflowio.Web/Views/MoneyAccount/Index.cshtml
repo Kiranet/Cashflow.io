@@ -1,20 +1,21 @@
 ﻿@using Cashflowio.Core.Interfaces
+@using Syncfusion.EJ2.DropDowns
 @inject IRepository Repository
 @{
     ViewData["Title"] = "Money Account";
 
-    var types = new Syncfusion.EJ2.DropDowns.DropDownList
+    var types = new DropDownList
     {
         Value = AccountType.Cash.ToString(),
         DataSource = new SelectList(Enum.GetNames(typeof(AccountType)).Select(x => new {Value = x, Text = x}), "Value", "Text"),
-        Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings {Value = "Value", Text = "Text"}
+        Query = "new ej.data.Query()", AllowFiltering = true, Fields = new DropDownListFieldSettings {Value = "Value", Text = "Text"}
     };
 
-    var currencies = new Syncfusion.EJ2.DropDowns.DropDownList
+    var currencies = new DropDownList
     {
         Value = Currency.MXN.ToString(),
         DataSource = new SelectList(Enum.GetNames(typeof(Currency)).Select(x => new {Value = x, Text = x}), "Value", "Text"),
-        Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings {Value = "Value", Text = "Text"}
+        Query = "new ej.data.Query()", AllowFiltering = true, Fields = new DropDownListFieldSettings {Value = "Value", Text = "Text"}
     };
 
     var commands = new List<object>

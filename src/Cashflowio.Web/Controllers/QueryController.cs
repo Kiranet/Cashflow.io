@@ -205,10 +205,8 @@ namespace Cashflowio.Web.Controllers
             var expenseCategories = _repository.List<ExpenseCategory>().ToList();
 
             foreach (var expenseCategory in newExpenseCategories)
-            {
                 if (expenseCategories.Find(x => x.Name == expenseCategory.Name) == null)
                     _repository.Add(expenseCategory);
-            }
 
             var newConcepts = transactions
                 .Select(x => x.Tag).Distinct()
@@ -217,10 +215,8 @@ namespace Cashflowio.Web.Controllers
             var concepts = _repository.List<Concept>().ToList();
 
             foreach (var concept in newConcepts)
-            {
                 if (concepts.Find(x => x.Name == concept.Name) == null)
                     _repository.Add(concept);
-            }
         }
 
         public IActionResult Credit(int id, int year)
@@ -237,7 +233,7 @@ namespace Cashflowio.Web.Controllers
             }
 
             var creditCharges = _repository.List<CreditCharge>();
-            
+
             if (year != 0)
                 creditCharges = creditCharges.Where(x => x.Date.Year == year).ToList();
 
@@ -305,7 +301,7 @@ namespace Cashflowio.Web.Controllers
                 .Where(rt => rt.Type == nameof(Payment) && !rt.IsProcessed).ToList();
 
             var expenseCategory = _repository.List<ExpenseCategory>().ToList();
-            var creditCharges = _repository.ListWithNoTracking<CreditCharge>().OrderByDescending(x => x.Date).ToList();
+            var creditCharges = _repository.List<CreditCharge>().OrderByDescending(x => x.Date).ToList();
             var conceptsNamesById = _repository.List<Concept>().ToDictionary(x => x.Id, x => x.Name);
             var creditPayments = new List<CreditPayment>();
 
@@ -322,22 +318,18 @@ namespace Cashflowio.Web.Controllers
                 var creditCharge = new CreditCharge();
 
                 if (containsExpenseCategory)
-                {
                     creditCharge = creditCharges.Find(x =>
                         !x.IsPaid
                         && rt.Amount <= x.Amount
                         && rt.Date >= x.Date
                         && conceptsNamesById[x.ConceptId] == rt.Tag
                         && rt.Note.Contains(destinationNamesById[x.DestinationId]));
-                }
                 else
-                {
                     creditCharge = creditCharges.Find(x =>
                         !x.IsPaid
                         && rt.Amount <= x.Amount
                         && rt.Date >= x.Date
                         && conceptsNamesById[x.ConceptId] == rt.Tag);
-                }
 
                 var creditPayment = new CreditPayment
                 {

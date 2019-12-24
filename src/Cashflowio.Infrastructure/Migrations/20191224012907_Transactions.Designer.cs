@@ -10,46 +10,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cashflowio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20191201214102_Concepts")]
-    partial class Concepts
+    [Migration("20191224012907_Transactions")]
+    partial class Transactions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Cashflowio.Core.Entities.Binnacle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Advice")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Bad")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Good")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Month")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Review")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Binnacle");
-                });
 
             modelBuilder.Entity("Cashflowio.Core.Entities.Concept", b =>
                 {
@@ -64,6 +34,98 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Concepts");
+                });
+
+            modelBuilder.Entity("Cashflowio.Core.Entities.CreditCharge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ConceptId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ExchangeRateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RawTransactionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConceptId");
+
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("ExchangeRateId");
+
+                    b.HasIndex("RawTransactionId");
+
+                    b.HasIndex("SourceId");
+
+                    b.ToTable("CreditCharges");
+                });
+
+            modelBuilder.Entity("Cashflowio.Core.Entities.CreditPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("CreditChargeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ExchangeRateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RawTransactionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreditChargeId");
+
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("ExchangeRateId");
+
+                    b.HasIndex("RawTransactionId");
+
+                    b.HasIndex("SourceId");
+
+                    b.ToTable("CreditPayments");
                 });
 
             modelBuilder.Entity("Cashflowio.Core.Entities.ExchangeRate", b =>
@@ -88,6 +150,55 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ExchangeRates");
+                });
+
+            modelBuilder.Entity("Cashflowio.Core.Entities.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ConceptId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ExchangeRateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RawTransactionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConceptId");
+
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("ExchangeRateId");
+
+                    b.HasIndex("RawTransactionId");
+
+                    b.HasIndex("SourceId");
+
+                    b.ToTable("Expenses");
                 });
 
             modelBuilder.Entity("Cashflowio.Core.Entities.ExpenseCategory", b =>
@@ -278,6 +389,97 @@ namespace Cashflowio.Infrastructure.Migrations
                     b.HasIndex("SourceId");
 
                     b.ToTable("Transfers");
+                });
+
+            modelBuilder.Entity("Cashflowio.Core.Entities.CreditCharge", b =>
+                {
+                    b.HasOne("Cashflowio.Core.Entities.Concept", "Concept")
+                        .WithMany()
+                        .HasForeignKey("ConceptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cashflowio.Core.Entities.ExpenseCategory", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cashflowio.Core.Entities.ExchangeRate", "ExchangeRate")
+                        .WithMany()
+                        .HasForeignKey("ExchangeRateId");
+
+                    b.HasOne("Cashflowio.Core.Entities.RawTransaction", "RawTransaction")
+                        .WithMany()
+                        .HasForeignKey("RawTransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cashflowio.Core.Entities.MoneyAccount", "Source")
+                        .WithMany()
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Cashflowio.Core.Entities.CreditPayment", b =>
+                {
+                    b.HasOne("Cashflowio.Core.Entities.CreditCharge", "CreditCharge")
+                        .WithMany("Payments")
+                        .HasForeignKey("CreditChargeId");
+
+                    b.HasOne("Cashflowio.Core.Entities.MoneyAccount", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cashflowio.Core.Entities.ExchangeRate", "ExchangeRate")
+                        .WithMany()
+                        .HasForeignKey("ExchangeRateId");
+
+                    b.HasOne("Cashflowio.Core.Entities.RawTransaction", "RawTransaction")
+                        .WithMany()
+                        .HasForeignKey("RawTransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cashflowio.Core.Entities.MoneyAccount", "Source")
+                        .WithMany()
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Cashflowio.Core.Entities.Expense", b =>
+                {
+                    b.HasOne("Cashflowio.Core.Entities.Concept", "Concept")
+                        .WithMany()
+                        .HasForeignKey("ConceptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cashflowio.Core.Entities.ExpenseCategory", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cashflowio.Core.Entities.ExchangeRate", "ExchangeRate")
+                        .WithMany()
+                        .HasForeignKey("ExchangeRateId");
+
+                    b.HasOne("Cashflowio.Core.Entities.RawTransaction", "RawTransaction")
+                        .WithMany()
+                        .HasForeignKey("RawTransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cashflowio.Core.Entities.MoneyAccount", "Source")
+                        .WithMany()
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Cashflowio.Core.Entities.Income", b =>

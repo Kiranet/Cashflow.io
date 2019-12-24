@@ -1,11 +1,18 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Cashflowio.Core.Entities;
 using Cashflowio.Core.Interfaces;
+using Cashflowio.Core.SharedKernel;
 using Cashflowio.Web.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cashflowio.Web.Services
 {
+    public interface ITransactionService
+    {
+        DashboardViewModel QueryData(int selectedYear);
+    }
+
     public class TransactionService : ITransactionService
     {
         private readonly IRepository _repository;
@@ -13,21 +20,30 @@ namespace Cashflowio.Web.Services
         public TransactionService(IRepository repository)
         {
             _repository = repository;
+
+            var income = _repository.List<Income>();
+            var expenses = _repository.List<Expense>();
+            var transfers = _repository.List<Transfer>();
+            var creditCharges = _repository.List<CreditCharge>();
+            var creditPayments = _repository.List<CreditPayment>();
+
+            Transactions = income.Concat<BaseEntity>(expenses).Concat(transfers)
+                .Concat(creditCharges).Concat(creditPayments).ToList();
         }
 
-        public DashboardViewModel Query(int selectedYear)
-        {
-            var income = _repository.List<Income>().ToList();
-            var expenses = _repository.List<Expense>().ToList();
-            var transfers = _repository.List<Transfer>().ToList();
-            var creditCharges = _repository.List<CreditCharge>().ToList();
-            var creditPayments = _repository.List<CreditPayment>().ToList();
+        public List<BaseEntity> Transactions { get; set; }
 
+        public DashboardViewModel QueryData(int selectedYear)
+        {
+            var income = Transactions.Where(x => x is Income).Cast<Income>().ToList();
             var vm = new DashboardViewModel
             {
-                Years = new SelectList(income.Select(x => x.Date.Year).Distinct(), selectedValue: selectedYear),
+                Years = new SelectList(income.Select(x => x.Date.Year).Distinct(), selectedYear),
                 SelectedYear = selectedYear
             };
+
+            var transfers = Transactions.Where(x => x is Transfer).Cast<Transfer>().ToList();
+            var expenses = Transactions.Where(x => x is Expense).Cast<Expense>().ToList();
 
             if (selectedYear != 0)
             {
@@ -53,16 +69,17 @@ namespace Cashflowio.Web.Services
                 };
 
                 foreach (var group in exitIncome.GroupBy(x => x.Description))
-                {
                     item.Concepts.Add(new IncomeConceptViewModel
                     {
-                        Description = group.Key,
-                        Amount = group.Sum(x => x.Amount)
+                        Description = @group.Key,
+                        Amount = @group.Sum(x => x.Amount)
                     });
-                }
 
                 vm.Income.Add(item);
             }
+
+            var creditCharges = Transactions.Where(x => x is CreditCharge).Cast<CreditCharge>().ToList();
+            var creditPayments = Transactions.Where(x => x is CreditPayment).Cast<CreditPayment>().ToList();
 
             foreach (var moneyAccount in moneyAccounts)
             {
@@ -96,30 +113,26 @@ namespace Cashflowio.Web.Services
                 };
 
                 foreach (var group in transferReceivedByType)
-                {
                     item.Concepts.Add(new MoneyAccountConceptViewModel
                     {
                         Icon = "fa-angle-down text-success",
-                        Amount = group.Sum(x => x.Amount),
-                        Name = group.Key,
-                        Source = group.Key,
+                        Amount = @group.Sum(x => x.Amount),
+                        Name = @group.Key,
+                        Source = @group.Key,
                         Destination = moneyAccount.Name,
                         Description = "Received"
                     });
-                }
 
                 foreach (var group in transferSentByType)
-                {
                     item.Concepts.Add(new MoneyAccountConceptViewModel
                     {
                         Icon = "fa-angle-up text-danger",
-                        Amount = group.Sum(x => x.Amount),
-                        Name = group.Key,
+                        Amount = @group.Sum(x => x.Amount),
+                        Name = @group.Key,
                         Source = moneyAccount.Name,
-                        Destination = group.Key,
+                        Destination = @group.Key,
                         Description = "Sent"
                     });
-                }
 
                 vm.MoneyAccounts.Add(item);
             }
@@ -141,24 +154,17 @@ namespace Cashflowio.Web.Services
                 };
 
                 foreach (var moneyOutflow in expensesByConcept)
-                {
                     item.Concepts.Add(new ExpenseConceptViewModel
                     {
                         Description = moneyOutflow.Key,
                         Amount = moneyOutflow.Sum(x =>
                             x.ExchangeRate == null ? x.Amount : x.Amount * x.ExchangeRate.Value)
                     });
-                }
 
                 vm.ExpenseCategories.Add(item);
             }
 
             return vm;
         }
-    }
-
-    public interface ITransactionService
-    {
-        DashboardViewModel Query(int selectedYear);
     }
 }

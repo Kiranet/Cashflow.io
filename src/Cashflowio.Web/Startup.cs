@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Syncfusion.Licensing;
 
 namespace Cashflowio.Web
 {
@@ -51,29 +52,25 @@ namespace Cashflowio.Web
 
             builder.Populate(services);
 
-            Assembly webAssembly = Assembly.GetExecutingAssembly();
-            Assembly coreAssembly = Assembly.GetAssembly(typeof(BaseEntity));
-            Assembly infrastructureAssembly = Assembly.GetAssembly(typeof(EfRepository));
+            var webAssembly = Assembly.GetExecutingAssembly();
+            var coreAssembly = Assembly.GetAssembly(typeof(BaseEntity));
+            var infrastructureAssembly = Assembly.GetAssembly(typeof(EfRepository));
             builder.RegisterAssemblyTypes(webAssembly, coreAssembly, infrastructureAssembly).AsImplementedInterfaces();
 
-            IContainer applicationContainer = builder.Build();
+            var applicationContainer = builder.Build();
             return new AutofacServiceProvider(applicationContainer);
         }
 
         public void Configure(IApplicationBuilder app, IHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
+            SyncfusionLicenseProvider.RegisterLicense(
                 "MTUyNzI4QDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9;MTUyNzI5QDMxMzcyZTMzMmUzMGN6NWE0S0tDNDV2MU0zTmdzbEVwdzZTOWFXS0NSN0NERnZPQjN5bERjSGM9;MTUyNzMwQDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9");
 
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 //app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
-            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -88,8 +85,8 @@ namespace Cashflowio.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Dashboard}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Dashboard}/{action=Index}/{id?}");
             });
         }
     }

@@ -4,24 +4,14 @@
     <AssemblyName>Cashflowio.Infrastructure</AssemblyName>
     <PackageId>Cashflowio.Infrastructure</PackageId>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Migrations\20191103182039_Avatars.Description.cs" />
-    <Compile Remove="Migrations\20191103182039_Avatars.Description.Designer.cs" />
-    <Compile Remove="Migrations\20191108221909_IncomeSources.cs" />
-    <Compile Remove="Migrations\20191108221909_IncomeSources.Designer.cs" />
-    <Compile Remove="Migrations\20191118232412_ConvertirEnumsAStrings2.cs" />
-    <Compile Remove="Migrations\20191118232412_ConvertirEnumsAStrings2.Designer.cs" />
-    <Compile Remove="Migrations\20191212143007_CreditChargeAndPayment.cs" />
-    <Compile Remove="Migrations\20191212143007_CreditChargeAndPayment.Designer.cs" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" PrivateAssets="all">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>

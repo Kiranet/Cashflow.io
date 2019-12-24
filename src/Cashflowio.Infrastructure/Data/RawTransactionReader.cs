@@ -24,7 +24,6 @@ namespace Cashflowio.Infrastructure.Data
                 var transactions = new List<RawTransaction>();
 
                 for (var i = FirstDataRow; i <= totalRows; i++)
-                {
                     transactions.Add(new RawTransaction
                     {
                         Date = workSheet.GetDate(i, CoinkeeperColumn.Date),
@@ -37,9 +36,8 @@ namespace Cashflowio.Infrastructure.Data
                         AmountConverted = workSheet.GetDouble(i, CoinkeeperColumn.AmountConverted),
                         CurrencyOfConversion = workSheet.GetString(i, CoinkeeperColumn.CurrencyOfConversion),
                         Recurrence = workSheet.GetString(i, CoinkeeperColumn.Recurrence),
-                        Note = workSheet.GetString(i, CoinkeeperColumn.Note),
+                        Note = workSheet.GetString(i, CoinkeeperColumn.Note)
                     });
-                }
 
                 return transactions;
             }

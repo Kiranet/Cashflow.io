@@ -17,28 +17,6 @@ namespace Cashflowio.Core.Entities
 
         public string Type { get; set; }
 
-        #region Factory Methods
-
-        public static MoneyAccount InstanceOf(AccountType accountType, string name, Currency currency) =>
-            new MoneyAccount(accountType, name, currency);
-
-        public static MoneyAccount Cash(string name, Currency currency = Entities.Currency.MXN) =>
-            InstanceOf(AccountType.Cash, name, currency);
-
-        public static MoneyAccount Debit(string name, Currency currency = Entities.Currency.MXN) =>
-            InstanceOf(AccountType.Debit, name, currency);
-
-        public static MoneyAccount Credit(string name, Currency currency = Entities.Currency.MXN) =>
-            InstanceOf(AccountType.Credit, name, currency);
-
-        public static MoneyAccount Savings(string name, Currency currency = Entities.Currency.MXN) =>
-            InstanceOf(AccountType.Savings, name, currency);
-
-        public static MoneyAccount Prepaid(string name, Currency currency = Entities.Currency.MXN) =>
-            InstanceOf(AccountType.Prepaid, name, currency);
-
-        #endregion
-
         public Transfer TransferTo(MoneyAccount destination)
         {
             var transfer = new Transfer
@@ -86,5 +64,39 @@ namespace Cashflowio.Core.Entities
 
             return TransferType.Other;
         }
+
+        #region Factory Methods
+
+        public static MoneyAccount InstanceOf(AccountType accountType, string name, Currency currency)
+        {
+            return new MoneyAccount(accountType, name, currency);
+        }
+
+        public static MoneyAccount Cash(string name, Currency currency = Entities.Currency.MXN)
+        {
+            return InstanceOf(AccountType.Cash, name, currency);
+        }
+
+        public static MoneyAccount Debit(string name, Currency currency = Entities.Currency.MXN)
+        {
+            return InstanceOf(AccountType.Debit, name, currency);
+        }
+
+        public static MoneyAccount Credit(string name, Currency currency = Entities.Currency.MXN)
+        {
+            return InstanceOf(AccountType.Credit, name, currency);
+        }
+
+        public static MoneyAccount Savings(string name, Currency currency = Entities.Currency.MXN)
+        {
+            return InstanceOf(AccountType.Savings, name, currency);
+        }
+
+        public static MoneyAccount Prepaid(string name, Currency currency = Entities.Currency.MXN)
+        {
+            return InstanceOf(AccountType.Prepaid, name, currency);
+        }
+
+        #endregion
     }
 }
