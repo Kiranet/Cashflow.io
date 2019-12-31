@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>
     <link href="~/lib/admin-lte/adminlte.min.css" rel="stylesheet"/>
+    <link href="~/lib/bootswatch/cyborg/bootstrap.min.css" rel="stylesheet"/>
     <link href="~/lib/fontawesome/all.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/highcontrast.css"/>
     @await RenderSectionAsync("styles", false).ConfigureAwait(false)
@@ -19,7 +20,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h5 class="m-0 text-dark">@ViewData["Title"]</h5>
+                        <h5 class="m-0 text-primary">@ViewData["Title"]</h5>
                     </div>
                     <div class="col-sm-6">
                         @await RenderSectionAsync("filters", false).ConfigureAwait(false)
@@ -40,7 +41,7 @@
     <footer class="main-footer">
         <strong>Copyright © @DateTime.Now.Year All rights reserved. </strong>
         <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 0.1
+            <b>Version</b> 0.5
         </div>
     </footer>
 

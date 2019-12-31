@@ -37,6 +37,7 @@ namespace Cashflowio.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc(options => options.EnableEndpointRouting = false)
+                .AddNewtonsoftJson()
                 .AddControllersAsServices()
                 .AddRazorRuntimeCompilation()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);

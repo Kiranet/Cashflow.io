@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cashflowio.Core.Entities;
 using Cashflowio.Core.Interfaces;
-using Cashflowio.Core.SharedKernel;
 using Cashflowio.Web.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -11,6 +11,7 @@ namespace Cashflowio.Web.Services
     public interface ITransactionService
     {
         DashboardViewModel QueryData(int selectedYear);
+        List<ITransaction> QueryCalendarData(DateTime start, DateTime end);
     }
 
     public class TransactionService : ITransactionService
@@ -27,11 +28,11 @@ namespace Cashflowio.Web.Services
             var creditCharges = _repository.List<CreditCharge>();
             var creditPayments = _repository.List<CreditPayment>();
 
-            Transactions = income.Concat<BaseEntity>(expenses).Concat(transfers)
+            Transactions = income.Concat<ITransaction>(expenses).Concat(transfers)
                 .Concat(creditCharges).Concat(creditPayments).ToList();
         }
 
-        public List<BaseEntity> Transactions { get; set; }
+        public List<ITransaction> Transactions { get; set; }
 
         public DashboardViewModel QueryData(int selectedYear)
         {
@@ -82,7 +83,7 @@ namespace Cashflowio.Web.Services
 
                 vm.Income.Add(item);
             }
-            
+
             foreach (var moneyAccount in moneyAccounts)
             {
                 var incomeReceived = income.Where(x => x.DestinationId == moneyAccount.Id);
@@ -91,18 +92,12 @@ namespace Cashflowio.Web.Services
                 var received = transfers.Where(x => x.DestinationId == moneyAccount.Id).ToList();
                 var spent = expenses.Where(x => x.SourceId == moneyAccount.Id).ToList();
                 var debt = creditCharges.Where(x => x.SourceId == moneyAccount.Id);
-                var balance = incomeReceived.Sum(x => x.Amount) - sent.Sum(x => x.Amount) + received.Sum(x => x.Amount)
-                                                                                          + paymentReceived.Sum(x =>
-                                                                                              x.Amount) - debt.Sum(x =>
-                                                                                                            x.Amount)
-                                                                                                        - spent.Sum(x =>
-                                                                                                            x.ExchangeRate ==
-                                                                                                            null
-                                                                                                                ? x
-                                                                                                                    .Amount
-                                                                                                                : x.Amount *
-                                                                                                                  x.ExchangeRate
-                                                                                                                      .Value);
+                var balance = incomeReceived.Sum(x => x.Amount)
+                              + received.Sum(x => x.Amount)
+                              + paymentReceived.Sum(x => x.Amount)
+                              - sent.Sum(x => x.Amount)
+                              - debt.Sum(x => x.Amount)
+                              - spent.Sum(x => x.ExchangeRate == null ? x.Amount : x.Amount * x.ExchangeRate.Value);
                 var transferSentByType = sent.GroupBy(x => x.Destination.Name)
                     .OrderByDescending(g => g.Sum(i => i.Amount));
                 var transferReceivedByType = received.GroupBy(x => x.Source.Name)
@@ -171,6 +166,11 @@ namespace Cashflowio.Web.Services
             }
 
             return vm;
+        }
+
+        public List<ITransaction> QueryCalendarData(DateTime start, DateTime end)
+        {
+            return Transactions.Where(x => x.Date >= start && x.Date <= end).ToList();
         }
     }
 }

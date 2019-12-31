@@ -9,7 +9,7 @@ namespace Cashflowio.Core.Entities
         public string Name { get; set; }
     }
 
-    public abstract class Transaction : BaseEntity
+    public abstract class Transaction : BaseEntity, ITransaction
     {
         public DateTime Date { get; set; }
         public double Amount { get; set; }

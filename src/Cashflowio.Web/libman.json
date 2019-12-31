@@ -40,6 +40,30 @@
         "js/jquery.dataTables.min.js",
         "js/dataTables.bootstrap4.min.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "fullcalendar@4.2.0",
+      "destination": "wwwroot/lib/fullcalendar/",
+      "files": [
+        "core/main.min.css",
+        "core/main.min.js",
+        "daygrid/main.min.css",
+        "daygrid/main.min.js",
+        "timegrid/main.min.css",
+        "timegrid/main.min.js",
+        "bootstrap/main.min.css",
+        "bootstrap/main.min.js",
+        "interaction/main.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootswatch@4.4.1",
+      "destination": "wwwroot/lib/bootswatch/",
+      "files": [
+        "cyborg/bootstrap.min.css"
+      ]
     }
   ]
 }

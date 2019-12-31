@@ -1,8 +1,16 @@
-﻿namespace Cashflowio.Core.Entities
+﻿using System;
+
+namespace Cashflowio.Core.Entities
 {
     public interface INameable
     {
         string Name { get; set; }
+    }
+
+    public interface ITransaction
+    {
+        DateTime Date { get; set; }
+        public double Amount { get; set; }
     }
 
     internal interface IMoneyOutflow
