@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cashflowio.Core.Entities;
 using Cashflowio.Core.Interfaces;
 using Cashflowio.Web.Models;
 using Cashflowio.Web.Services;
+using FluentDateTime;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -77,6 +79,16 @@ namespace Cashflowio.Web.Controllers
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
+        }
+
+        public IActionResult Pivot()
+        {
+            _repository.List<ExpenseCategory>();
+            _repository.List<MoneyAccount>();
+            
+            return View(_transactionService
+                .QueryCalendarData(DateTime.Now.FirstDayOfYear(), DateTime.Now.LastDayOfYear())
+                .Where(x => x is Expense).Cast<Expense>());
         }
     }
 }

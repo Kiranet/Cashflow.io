@@ -32,6 +32,17 @@
       "destination": "wwwroot/lib/admin-lte"
     },
     {
+      "library": "node_modules/admin-lte/plugins/jquery-ui",
+      "files": [ "jquery-ui.min.js" ],
+      "destination": "wwwroot/lib/jquery-ui/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jqueryui-touch-punch@0.2.3",
+      "destination": "wwwroot/lib/jquery-ui-touch-punch",
+      "files": [ "jquery.ui.touch-punch.min.js" ]
+    },
+    {
       "provider": "cdnjs",
       "library": "datatables@1.10.19",
       "destination": "wwwroot/lib/datatables",
@@ -63,6 +74,25 @@
       "destination": "wwwroot/lib/bootswatch/",
       "files": [
         "cyborg/bootstrap.min.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "pivottable@2.22.0",
+      "destination": "wwwroot/lib/pivottable/",
+      "files": [
+        "pivot.min.css",
+        "pivot.min.js",
+        "plotly_renderers.min.js",
+        "export_renderers.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "plotly.js@1.42.5",
+      "destination": "wwwroot/lib/plotly/",
+      "files": [
+        "plotly-basic.min.js"
       ]
     }
   ]

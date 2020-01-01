@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Expense>
+@{
+    ViewBag.Title = "Pivot";
+}
+
+<table id="table" class="d-none">
+    <thead>
+        <tr>
+            <th>@nameof(Expense.Amount)</th>
+            <th>@nameof(Expense.Date)</th>
+            <th>@nameof(DateTime.Year)</th>
+            <th>@nameof(DateTime.Month)</th>
+            <th>@nameof(DateTime.DayOfWeek)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model)
+        {
+            var date = transaction.Date;
+            <tr>
+                <td>@transaction.Amount</td>
+                <td>@date.ToString("MMM-dd-yy")</td>
+                <td>@date.Year</td>
+                <td>@date.Month : @date.ToString("MMM")</td>
+                <td>@date.DayOfWeek : @date.ToString("dddd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="output" style="overflow-x: scroll;"></div>
+
+@section Styles{
+    <link href="~/lib/pivottable/pivot.min.css" rel="stylesheet" />
+     <style>
+        table.pvtTable thead tr th{
+            background-color: #0f0f0f;
+            color: whitesmoke;
+        }
+
+        table.pvtTable tbody tr th{
+            background-color: #0f0f0f;
+            color: whitesmoke;
+        }
+     </style>
+}
+
+@section Scripts{
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+    <script src="~/lib/plotly/plotly-basic.min.js"></script>
+    <script src="~/lib/pivottable/pivot.min.js"></script>
+    <script src="~/lib/pivottable/export_renderers.min.js"></script>
+    <script src="~/lib/pivottable/plotly_renderers.min.js"></script>
+
+    <script>
+        $(function () {
+            const renderers = $.extend(
+                $.pivotUtilities.renderers,
+                $.pivotUtilities.plotly_renderers,
+                $.pivotUtilities.export_renderers
+            );
+
+            $("#output").pivotUI($("#table"),
+                {
+                    renderers: renderers
+                },
+                false);
+        });
+    </script>
+}
