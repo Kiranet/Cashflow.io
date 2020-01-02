@@ -87,14 +87,14 @@ namespace Cashflowio.Web.Services
             foreach (var moneyAccount in moneyAccounts)
             {
                 var incomeReceived = income.Where(x => x.DestinationId == moneyAccount.Id);
-                var paymentReceived = creditPayments.Where(x => x.DestinationId == moneyAccount.Id);
+                //var paymentReceived = creditPayments.Where(x => x.CreditCharge.SourceId == moneyAccount.Id);
                 var sent = transfers.Where(x => x.SourceId == moneyAccount.Id).ToList();
                 var received = transfers.Where(x => x.DestinationId == moneyAccount.Id).ToList();
                 var spent = expenses.Where(x => x.SourceId == moneyAccount.Id).ToList();
                 var debt = creditCharges.Where(x => x.SourceId == moneyAccount.Id);
                 var balance = incomeReceived.Sum(x => x.Amount)
                               + received.Sum(x => x.Amount)
-                              + paymentReceived.Sum(x => x.Amount)
+                //              + paymentReceived.Sum(x => x.Amount)
                               - sent.Sum(x => x.Amount)
                               - debt.Sum(x => x.Amount)
                               - spent.Sum(x => x.ExchangeRate == null ? x.Amount : x.Amount * x.ExchangeRate.Value);
