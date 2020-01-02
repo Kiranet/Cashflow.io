@@ -21,8 +21,8 @@ namespace Cashflowio.Web.Controllers
 
             if (transactions.Any()) return View(transactions);
 
-            var items = RawTransactionReader.GetAll(
-                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.Tests\Assets\CoinKeeper.xlsx");
+            var items = RawTransactionFactory.ReadFromFile(
+                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.IntegrationTests\Assets\CoinKeeper.xlsx");
 
             _repository.AddRange(items);
 
@@ -35,8 +35,8 @@ namespace Cashflowio.Web.Controllers
 
             if (transactions.Any()) return View(transactions);
 
-            var items = RawTransactionReader.GetAll(
-                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.Tests\Assets\CoinKeeper.xlsx");
+            var items = RawTransactionFactory.ReadFromFile(
+                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.IntegrationTests\Assets\CoinKeeper.xlsx");
 
             _repository.AddRange(items);
 

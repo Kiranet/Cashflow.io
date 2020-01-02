@@ -2,7 +2,7 @@
 using System.Linq;
 using Cashflowio.Core.Entities;
 
-namespace Cashflowio.Tests.Core
+namespace Cashflowio.UnitTests
 {
     public static class FakeRepository
     {
