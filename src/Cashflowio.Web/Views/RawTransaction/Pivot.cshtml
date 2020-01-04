@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<RawTransaction>
-@{
-    ViewData["Title"] = "Raw Transaction List";
-}
+
 <div class="control-section" style="overflow:auto">
     <div class="content-wrapper">
         <ejs-pivotview id="pivotview" enginePopulated="onGridEnginePopulate"
@@ -15,7 +13,6 @@
                     <e-field name="@(nameof(RawTransaction.Amount))" format="C0" maximumSignificantDigits="10" minimumSignificantDigits="1" useGrouping="true"></e-field>
                 </e-fieldlist-formatsettings>
                 <e-fieldlist-rows>
-                    <e-field name="@(nameof(RawTransaction.Type))"></e-field>
                     <e-field name="@(nameof(RawTransaction.Source))"></e-field>
                 </e-fieldlist-rows>
                 <e-fieldlist-columns>
@@ -27,6 +24,7 @@
                 </e-fieldlist-values>
                 <e-fieldlist-filters>
                     <e-field name="@(nameof(RawTransaction.Date))" caption="Date"></e-field>
+                    <e-field name="@(nameof(RawTransaction.Type))"></e-field>
                     <e-field name="@(nameof(RawTransaction.Currency))" caption="Currency"></e-field>
                     <e-field name="@(nameof(RawTransaction.Note))" caption="Note"></e-field>
                 </e-fieldlist-filters>
@@ -34,6 +32,19 @@
         </ejs-pivotfieldlist>
     </div>
 </div>
+
+@section filters
+{
+    @{
+        const bool value = true;
+    }
+    <form class="float-right">
+        <input type="hidden" name="@value" value="@value">
+        <button class="btn btn-primary" type="submit">
+            <i class="fas fa-sync"></i> Sync
+        </button>
+    </form>
+}
 
 <style>
         #pivotview {

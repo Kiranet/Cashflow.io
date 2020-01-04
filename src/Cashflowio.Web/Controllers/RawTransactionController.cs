@@ -1,46 +1,29 @@
-﻿using System.Linq;
-using Cashflowio.Core.Entities;
-using Cashflowio.Core.Interfaces;
-using Cashflowio.Infrastructure.Data;
+﻿using Cashflowio.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cashflowio.Web.Controllers
 {
     public class RawTransactionController : Controller
     {
-        private readonly IRepository _repository;
+        private readonly IRawTransactionService _service;
 
-        public RawTransactionController(IRepository repository)
+        public RawTransactionController(IRawTransactionService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         public IActionResult Grid()
         {
-            var transactions = _repository.List<RawTransaction>();
-
-            if (transactions.Any()) return View(transactions);
-
-            var items = RawTransactionFactory.ReadFromFile(
-                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.IntegrationTests\Assets\CoinKeeper.xlsx");
-
-            _repository.AddRange(items);
-
-            return View(_repository.List<RawTransaction>());
+            ViewData["Title"] = nameof(Grid);
+            var isUpdateNeeded = Request.Query.Count > 0;
+            return View(_service.QueryAll(isUpdateNeeded));
         }
 
         public IActionResult Pivot()
         {
-            var transactions = _repository.List<RawTransaction>();
-
-            if (transactions.Any()) return View(transactions);
-
-            var items = RawTransactionFactory.ReadFromFile(
-                @"C:\Users\Jesus\source\repos\Cashflowio\Cashflowio\tests\Cashflowio.IntegrationTests\Assets\CoinKeeper.xlsx");
-
-            _repository.AddRange(items);
-
-            return View(_repository.List<RawTransaction>());
+            ViewData["Title"] = nameof(Pivot);
+            var isUpdateNeeded = Request.Query.Count > 0;
+            return View(_service.QueryAll(isUpdateNeeded));
         }
     }
 }

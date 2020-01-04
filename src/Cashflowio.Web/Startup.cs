@@ -65,7 +65,7 @@ namespace Cashflowio.Web
         public void Configure(IApplicationBuilder app, IHostEnvironment env, ILoggerFactory loggerFactory)
         {
             SyncfusionLicenseProvider.RegisterLicense(
-                "MTUyNzI4QDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9;MTUyNzI5QDMxMzcyZTMzMmUzMGN6NWE0S0tDNDV2MU0zTmdzbEVwdzZTOWFXS0NSN0NERnZPQjN5bERjSGM9;MTUyNzMwQDMxMzcyZTMzMmUzMGJVMW1sek0xcTJDTVV5NEtwUml4b3hwd1E5ZmE5VDVTWk9ydURaRUlUdjA9");
+                "MTkxNDIwQDMxMzcyZTM0MmUzMGVRV1JjYVhCR08xTGl2QUFzV09wc1RHalNjM29rRVQzUHdoQlpXOGtjTDg9");
 
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
