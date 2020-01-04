@@ -1,11 +1,8 @@
 ﻿@inject IRepository Repository
 @using Cashflowio.Core.Interfaces
 @model DashboardViewModel
-@{
-    ViewBag.Title = "Dashboard";
-}
 
-@section filters
+@section actionbar
 {
     <form id="yearForm" asp-action="Index" method="get" class="form-inline float-right">
         <select asp-for="Year" asp-items="@Model.Years" class="form-control select2" onchange="$('#yearForm').submit()">
