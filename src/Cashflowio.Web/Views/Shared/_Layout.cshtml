@@ -1,13 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link href="~/lib/admin-lte/adminlte.min.css" rel="stylesheet"/>
-    <link href="~/lib/bootswatch/cyborg/bootstrap.min.css" rel="stylesheet"/>
-    <link href="~/lib/fontawesome/all.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/highcontrast.css"/>
+    <link href="~/lib/admin-lte/adminlte.min.css" rel="stylesheet" />
+    <link href="~/lib/bootswatch/cyborg/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/highcontrast.css" />
+    <link href="~/lib/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/select2-bootstrap4.min.css" rel="stylesheet" />
     @await RenderSectionAsync("styles", false).ConfigureAwait(false)
 </head>
 
@@ -23,7 +25,7 @@
                         <h5 class="m-0 text-primary">@ViewData["Title"]</h5>
                     </div>
                     <div class="col-sm-6">
-                        @await RenderSectionAsync("filters", false).ConfigureAwait(false)
+                        @await RenderSectionAsync("actionbar", false).ConfigureAwait(false)
                     </div>
                 </div>
             </div>
@@ -52,6 +54,7 @@
 <script src="~/lib/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="~/lib/admin-lte/adminlte.min.js"></script>
 <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+<script src="~/lib/select2/select2.min.js"></script>
 @await RenderSectionAsync("scripts", false).ConfigureAwait(false)
 <ejs-scripts></ejs-scripts>
 </body>

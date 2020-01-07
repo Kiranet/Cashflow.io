@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Cashflowio.Core.Utils
 {
-    public static class EnumUtils
+    public static class EnumFactory
     {
         public static IEnumerable<T> GetTypedValues<T>() where T : Enum
         {

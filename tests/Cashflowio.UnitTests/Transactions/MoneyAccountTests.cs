@@ -3,7 +3,7 @@ using Cashflowio.Core.Entities;
 using Cashflowio.Core.Utils;
 using Xunit;
 
-namespace Cashflowio.Tests.Core
+namespace Cashflowio.UnitTests.Transactions
 {
     public class MoneyAccountTests
     {
@@ -34,13 +34,13 @@ namespace Cashflowio.Tests.Core
         [InlineData(AccountType.Prepaid, null)]
         [InlineData(AccountType.Cash, AccountType.Credit)]
         [InlineData(AccountType.Savings, AccountType.Credit)]
-        public void MakeInvalidTransfers(AccountType? source, AccountType? destination)
+        public void TryInvalidTransfers(AccountType? source, AccountType? destination)
         {
             var sourceAccount = FakeRepository.FirstOrNull(source);
             var destinationAccount = FakeRepository.FirstOrNull(destination);
 
             if (sourceAccount == null || destinationAccount == null)
-                foreach (var accountType in EnumUtils.GetTypedValues<AccountType>())
+                foreach (var accountType in EnumFactory.GetTypedValues<AccountType>())
                 {
                     var auxAccount = FakeRepository.First(accountType);
 

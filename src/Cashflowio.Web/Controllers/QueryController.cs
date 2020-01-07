@@ -25,7 +25,7 @@ namespace Cashflowio.Web.Controllers
                 if (newTransfer.Id == 0)
                     throw new Exception($"{JsonConvert.SerializeObject(newTransfer)}");
 
-                var rawTransaction = _repository.GetById<RawTransaction>(newTransfer.RawTransactionId);
+                var rawTransaction = _repository.GetById<RawTransaction>(newTransfer.TransactionId);
                 rawTransaction.IsProcessed = true;
                 _repository.Update(rawTransaction);
             }
@@ -52,7 +52,7 @@ namespace Cashflowio.Web.Controllers
 
                     var transfer = sourceFound?.TransferTo(destinationFound) ?? new Transfer();
 
-                    transfer.RawTransactionId = rt.Id;
+                    transfer.TransactionId = rt.Id;
                     transfer.Amount = rt.Amount;
                     transfer.Date = rt.Date;
                     transfer.Description = rt.Note;
@@ -80,7 +80,7 @@ namespace Cashflowio.Web.Controllers
                 {
                     var newIncome = new Income
                     {
-                        RawTransactionId = rt.Id
+                        TransactionId = rt.Id
                     };
 
                     var incomeFound =
@@ -119,7 +119,7 @@ namespace Cashflowio.Web.Controllers
                 if (newIncome.Id == 0)
                     throw new Exception($"{JsonConvert.SerializeObject(newIncome)}");
 
-                var rawTransaction = _repository.GetById<RawTransaction>(newIncome.RawTransactionId);
+                var rawTransaction = _repository.GetById<RawTransaction>(newIncome.TransactionId);
                 rawTransaction.IsProcessed = true;
                 _repository.Update(rawTransaction);
             }
@@ -140,7 +140,7 @@ namespace Cashflowio.Web.Controllers
                 if (newExpense.Id == 0)
                     throw new Exception($"{JsonConvert.SerializeObject(newExpense)}");
 
-                var rawTransaction = _repository.GetById<RawTransaction>(newExpense.RawTransactionId);
+                var rawTransaction = _repository.GetById<RawTransaction>(newExpense.TransactionId);
                 rawTransaction.IsProcessed = true;
                 _repository.Update(rawTransaction);
             }
@@ -174,7 +174,7 @@ namespace Cashflowio.Web.Controllers
 
                     var expense = new Expense
                     {
-                        RawTransactionId = rt.Id,
+                        TransactionId = rt.Id,
                         Amount = rt.Amount,
                         Date = rt.Date,
                         Description = rt.Note,
@@ -227,7 +227,7 @@ namespace Cashflowio.Web.Controllers
                 if (newCreditCharge.Id == 0)
                     throw new Exception($"{JsonConvert.SerializeObject(newCreditCharge)}");
 
-                var rawTransaction = _repository.GetById<RawTransaction>(newCreditCharge.RawTransactionId);
+                var rawTransaction = _repository.GetById<RawTransaction>(newCreditCharge.TransactionId);
                 rawTransaction.IsProcessed = true;
                 _repository.Update(rawTransaction);
             }
@@ -259,7 +259,7 @@ namespace Cashflowio.Web.Controllers
 
                 return new CreditCharge
                 {
-                    RawTransactionId = x.Id,
+                    TransactionId = x.Id,
                     Date = x.Date,
                     Amount = x.Amount,
                     Description = x.Note,
@@ -279,7 +279,7 @@ namespace Cashflowio.Web.Controllers
                 if (newCreditPayment.Id == 0)
                     throw new Exception($"{JsonConvert.SerializeObject(newCreditPayment)}");
 
-                var rawTransaction = _repository.GetById<RawTransaction>(newCreditPayment.RawTransactionId);
+                var rawTransaction = _repository.GetById<RawTransaction>(newCreditPayment.TransactionId);
                 rawTransaction.IsProcessed = true;
                 _repository.Update(rawTransaction);
             }
@@ -311,11 +311,10 @@ namespace Cashflowio.Web.Controllers
             foreach (var rt in rawTransactions)
             {
                 moneyAccountsByName.TryGetValue(rt.Source, out var sourceFound);
-                moneyAccountsByName.TryGetValue(rt.Destination, out var destinationFound);
 
                 var containsExpenseCategory = expenseCategory.Any(x => rt.Note.Contains(x.Name));
 
-                var creditCharge = new CreditCharge();
+                CreditCharge creditCharge;
 
                 if (containsExpenseCategory)
                     creditCharge = creditCharges.Find(x =>
@@ -333,12 +332,11 @@ namespace Cashflowio.Web.Controllers
 
                 var creditPayment = new CreditPayment
                 {
-                    RawTransactionId = rt.Id,
+                    TransactionId = rt.Id,
                     Date = rt.Date,
                     Amount = rt.Amount,
                     Description = rt.Note,
                     SourceId = sourceFound?.Id ?? 0,
-                    DestinationId = destinationFound?.Id ?? 0,
                     CreditChargeId = creditCharge?.Id
                 };
 

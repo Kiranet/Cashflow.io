@@ -37,6 +37,21 @@
       "destination": "wwwroot/lib/jquery-ui/"
     },
     {
+      "library": "node_modules/admin-lte/plugins/select2/css",
+      "files": [ "select2.min.css" ],
+      "destination": "wwwroot/lib/select2/"
+    },
+    {
+      "library": "node_modules/admin-lte/plugins/select2/js",
+      "files": [ "select2.min.js" ],
+      "destination": "wwwroot/lib/select2/"
+    },
+    {
+      "library": "node_modules/admin-lte/plugins/select2-bootstrap4-theme",
+      "files": [ "select2-bootstrap4.min.css" ],
+      "destination": "wwwroot/lib/select2/"
+    },
+    {
       "provider": "cdnjs",
       "library": "jqueryui-touch-punch@0.2.3",
       "destination": "wwwroot/lib/jquery-ui-touch-punch",
@@ -78,21 +93,30 @@
     },
     {
       "provider": "cdnjs",
-      "library": "pivottable@2.22.0",
+      "library": "pivottable@2.23.0",
       "destination": "wwwroot/lib/pivottable/",
       "files": [
         "pivot.min.css",
         "pivot.min.js",
         "plotly_renderers.min.js",
-        "export_renderers.min.js"
+        "export_renderers.min.js",
+        "d3_renderers.min.js"
       ]
     },
     {
       "provider": "cdnjs",
-      "library": "plotly.js@1.42.5",
+      "library": "plotly.js@1.51.1",
       "destination": "wwwroot/lib/plotly/",
       "files": [
         "plotly-basic.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "d3@5.15.0",
+      "destination": "wwwroot/lib/d3/",
+      "files": [
+        "d3.min.js"
       ]
     }
   ]

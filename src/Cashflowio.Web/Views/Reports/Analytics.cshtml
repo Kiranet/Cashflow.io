@@ -1,0 +1,105 @@
+﻿@model AnalyticsViewModel
+
+@section actionbar
+{
+    <form id="analyticsForm" method="get" class="form-inline float-right">
+        <select asp-for="Year" asp-items="@Model.Years" class="form-control select2" onchange="$('#analyticsForm').submit()">
+            <option value="0">All years</option>
+        </select>
+        <select name="type" class="form-control select2" onchange="$('#analyticsForm').submit()">
+            <option>@nameof(Income)</option>
+            <option>@nameof(Expense)</option>
+            <option value="@nameof(CreditCharge)">Credit Charge</option>
+            <option value="@nameof(CreditPayment)">Credit Payment</option>
+            <option>@nameof(Transfer)</option>
+        </select>
+    </form>
+}
+
+<table id="table" class="d-none">
+    <thead>
+        <tr>
+            <th>@nameof(TransactionViewModel.Source)</th>
+            <th>@nameof(TransactionViewModel.Destination)</th>
+            <th>@nameof(TransactionViewModel.Description)</th>
+            <th>@nameof(TransactionViewModel.Currency)</th>
+            <th>@nameof(TransactionViewModel.Year)</th>
+            <th>@nameof(TransactionViewModel.Month)</th>
+            <th>@nameof(TransactionViewModel.DayOfWeek)</th>
+            <th>@nameof(TransactionViewModel.Day)</th>
+            <th>@nameof(TransactionViewModel.Date)</th>
+            <th>@nameof(TransactionViewModel.Amount)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model.Result)
+        {
+            <tr>
+                <td>@transaction.Source</td>
+                <td>@transaction.Destination</td>
+                <td>@transaction.Description</td>
+                <td>@transaction.Currency</td>
+                <td>@transaction.Year</td>
+                <td>@transaction.Month</td>
+                <td>@transaction.DayOfWeek</td>
+                <td>@transaction.Day</td>
+                <td>@transaction.Date</td>
+                <td>@transaction.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="output" style="overflow-x: scroll;"></div>
+
+@section Styles{
+    <link href="~/lib/pivottable/pivot.min.css" rel="stylesheet" />
+    <style>
+        table.pvtTable thead tr th {
+            background-color: #0f0f0f;
+            color: whitesmoke;
+        }
+
+        table.pvtTable tbody tr th {
+            background-color: #0f0f0f;
+            color: whitesmoke;
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+    <script src="~/lib/plotly/plotly-basic.min.js"></script>
+    <script src="~/lib/pivottable/pivot.min.js"></script>
+    <script src="~/lib/pivottable/export_renderers.min.js"></script>
+    <script src="~/lib/pivottable/plotly_renderers.min.js"></script>
+    <script src="~/lib/d3/d3.min.js"></script>
+    <script src="~/lib/pivottable/d3_renderers.min.js"></script>
+
+    <script>
+        $(function () {
+            $(".select2").select2();
+
+            const aggregatorTemplates = $.pivotUtilities.aggregatorTemplates;
+
+            const renderers = $.extend(
+                $.pivotUtilities.renderers,
+                $.pivotUtilities.plotly_renderers,
+                $.pivotUtilities.d3_renderers,
+                $.pivotUtilities.export_renderers
+            );
+
+            $("#output").pivotUI($("#table"),
+                {
+                    renderers: renderers,
+                    rendererName: "Heatmap",
+                    rows: ["@nameof(TransactionViewModel.Source)"],
+                    cols: ["@nameof(TransactionViewModel.Destination)"],
+                    aggregators: {
+                        "@nameof(Transaction.Amount)": function() { return aggregatorTemplates.sum()(["@nameof(Transaction.Amount)"])}
+                    },
+                },
+                false);
+        });
+    </script>
+}

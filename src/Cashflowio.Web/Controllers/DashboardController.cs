@@ -14,7 +14,8 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Index(int year)
         {
-            return View(_transactionService.QueryData(year));
+            ViewData["Title"] = "Dashboard";
+            return View(_transactionService.QueryDashboardData(year));
         }
     }
 }

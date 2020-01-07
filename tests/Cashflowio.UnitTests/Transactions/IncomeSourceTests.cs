@@ -6,7 +6,7 @@ using FluentDateTime;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace Cashflowio.Tests.Core
+namespace Cashflowio.UnitTests.Transactions
 {
     public class IncomeSourceTests
     {

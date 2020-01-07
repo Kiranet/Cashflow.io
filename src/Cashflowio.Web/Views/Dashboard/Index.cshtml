@@ -1,15 +1,12 @@
 ﻿@inject IRepository Repository
 @using Cashflowio.Core.Interfaces
 @model DashboardViewModel
-@{
-    ViewBag.Title = "Dashboard";
-}
 
-@section filters
+@section actionbar
 {
-    <form id="yearForm" asp-action="Index" method="get" class="form-inline">
-        <select asp-for="Year" asp-items="@Model.Years" class="form-control" onchange="$('#yearForm').submit()">
-            <option value="0">None</option>
+    <form id="yearForm" asp-action="Index" method="get" class="form-inline float-right">
+        <select asp-for="Year" asp-items="@Model.Years" class="form-control select2" onchange="$('#yearForm').submit()">
+            <option value="0">All years</option>
         </select>
     </form>
 }
@@ -50,7 +47,7 @@
     @foreach (var moneyAccount in Model.MoneyAccounts)
     {
         <div class="col-md-12">
-            <div class="card bg-primary collapsed-card">
+            <div class="card bg-info collapsed-card">
                 <div class="card-header">
                     <h3 class="card-title">
                         @moneyAccount.Name
@@ -92,7 +89,7 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary tip" title="Transfers"
+                                                <a class="btn btn-info tip" title="Transfers"
                                                    asp-action="Transfer" asp-controller="Query" asp-route-year="@Model.Year"
                                                    asp-route-source="@concept.Source" asp-route-destination="@concept.Destination">
                                                     <i class="fas fa-arrow-circle-right"></i> @concept.Count
@@ -115,7 +112,7 @@
     @foreach (var expenseCategory in Model.ExpenseCategories.OrderByDescending(x => x.Amount))
     {
         <div class="col-6">
-            <div class="card bg-danger">
+            <div class="card bg-danger" style="height: 450px">
                 <div class="card-header">
                     <h3 class="card-title">
                         @expenseCategory.Name
@@ -123,12 +120,6 @@
                             -@expenseCategory.Amount.ToString("C0")
                         </span>
                     </h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -190,6 +181,8 @@
     <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $(document).ready(function () {
+            $(".select2").select2();
+ 
             $('.table').DataTable({
                 bLengthChange: false,
                 pageLength: 5,
