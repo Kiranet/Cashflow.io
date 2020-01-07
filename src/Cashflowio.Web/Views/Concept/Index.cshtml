@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Concepts";
+}
+
+<ejs-grid id="Grid" load="onload" height="420" width="auto" allowTextWrap="true" allowPaging="true" allowSorting="true">
+    <e-grid-pagesettings pageSize="100" pageSizes="@(new[] {"10", "50", "100", "200", "500", "1000", "All"})"></e-grid-pagesettings>
+    <e-grid-filtersettings type="Excel"></e-grid-filtersettings>
+    <e-grid-sortsettings columns="@(new[] {new {field = "name", direction = "Ascending"}})"></e-grid-sortsettings>
+    <e-data-manager adaptor="UrlAdaptor" url="@Url.Action("DataSource")"></e-data-manager>
+    <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog" showDeleteConfirmDialog="true"></e-grid-editSettings>
+    <e-grid-columns>
+        <e-grid-column field="id" visible="false" isPrimaryKey="true" isIdentity="true"></e-grid-column>
+        <e-grid-column field="name" headerText="Name" width="120"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>

@@ -20,6 +20,7 @@ namespace Cashflowio.Infrastructure.Data
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<CreditCharge> CreditCharges { get; set; }
         public DbSet<CreditPayment> CreditPayments { get; set; }
+        public DbSet<BudgetCategory> BudgetCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
