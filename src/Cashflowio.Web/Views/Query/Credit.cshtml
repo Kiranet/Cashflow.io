@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<CreditCharge>
 @{
-    ViewData["Title"] = "Credit";
-
     var concept = Context.Request.Query["concept"].ToString();
     var destination = Context.Request.Query["destination"].ToString();
 
@@ -23,7 +21,7 @@
     };
 }
 
-<ejs-grid id="Grid" dataSource="@Model" dataBound="dataBound"
+<ejs-grid id="Grid" dataSource="@Model" dataBound="dataBound" locale="es-MX"
           enableHover="false" height="420" width="auto" allowSelection="false"
           toolbar="@(new List<string> {"Search"})" allowTextWrap="true"
           allowPaging="true" allowSorting="true" allowFiltering="true" load="onload">
@@ -32,11 +30,11 @@
     <e-grid-sortsettings columns="@(new[] {new {field = "Date", direction = "Descending"}})"></e-grid-sortsettings>
     <e-grid-searchsettings fields="@(new[] {"Date", "Concept", "Source", "Destination", "Amount"})"></e-grid-searchsettings>
     <e-grid-columns>
-        <e-grid-column field="@nameof(CreditCharge.Date)" headerText="Date" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="Destination.Name" headerText="Destination" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="Concept.Name" headerText="Concept" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(CreditCharge.Description)" headerText="Description" width="200" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(CreditCharge.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+        <e-grid-column field="@nameof(CreditCharge.Date)" headerText="Fecha" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Destination.Name" headerText="Destino" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Concept.Name" headerText="Concepto" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(CreditCharge.Description)" headerText="Descripción" width="200" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(CreditCharge.Amount)" headerText="Cantidad" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
         <e-grid-column commands="@commands" width="100"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>

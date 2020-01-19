@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Cashflowio.Web.Models
+﻿namespace Cashflowio.Web.Models
 {
     public class CalendarEventViewModel
     {

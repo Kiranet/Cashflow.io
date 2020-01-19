@@ -32,11 +32,8 @@ namespace Cashflowio.Infrastructure.Data
                     Tag = workSheet.GetString(i, CoinkeeperColumn.Tags),
                     Amount = workSheet.GetDouble(i, CoinkeeperColumn.Amount),
                     Currency = workSheet.GetString(i, CoinkeeperColumn.Currency),
-                    AmountConverted = workSheet.GetDouble(i, CoinkeeperColumn.AmountConverted),
-                    CurrencyOfConversion = workSheet.GetString(i, CoinkeeperColumn.CurrencyOfConversion),
-                    Recurrence = workSheet.GetString(i, CoinkeeperColumn.Recurrence),
                     Note = workSheet.GetString(i, CoinkeeperColumn.Note)
-                });
+                }.Normalized());
 
             return transactions;
         }
@@ -51,10 +48,7 @@ namespace Cashflowio.Infrastructure.Data
         Tags,
         Amount,
         Currency,
-        AmountConverted,
-        CurrencyOfConversion,
-        Recurrence,
-        Note
+        Note = 11
     }
 
     public static class ExcelWorksheetExtensions

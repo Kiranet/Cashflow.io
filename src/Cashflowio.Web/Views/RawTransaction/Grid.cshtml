@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<RawTransaction>
 
-<ejs-grid id="Grid" dataSource="@Model"
+<ejs-grid id="Grid" dataSource="@Model" locale="es-MX"
           enableHover="false" height="420" width="auto" allowSelection="false"
           toolbar="@(new List<string> {"Search"})" allowTextWrap="true"
           allowPaging="true" allowSorting="true" allowFiltering="true" load="onload">
@@ -10,12 +10,13 @@
     <e-grid-searchsettings fields="@(new[] {"Date", "Type", "Source", "Destination", "Tag", "Note", "Amount"})"></e-grid-searchsettings>
     <e-grid-columns>
         <e-grid-column field="@nameof(RawTransaction.Type)" headerText="•••" width="50" template="#typeTemplate" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(RawTransaction.Date)" headerText="Date" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(RawTransaction.Source)" headerText="Source" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(RawTransaction.Destination)" headerText="Source" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(RawTransaction.Tag)" headerText="Tag" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(RawTransaction.Note)" headerText="Note" width="200" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(RawTransaction.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Date)" headerText="Fecha" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Source)" headerText="Origen" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Destination)" headerText="Destino" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Tag)" headerText="Etiqueta" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Note)" headerText="Nota" width="200" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Amount)" headerText="Cantidad" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+        <e-grid-column field="@nameof(RawTransaction.Currency)" headerText="Tipo de cambio" width="100" textAlign="Right"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
 
@@ -27,7 +28,7 @@
     <form class="float-right">
         <input type="hidden" name="@value" value="@value">
         <button class="btn btn-primary" type="submit">
-            <i class="fas fa-sync"></i> Sync
+            <i class="fas fa-sync"></i> Sincronizar
         </button>
     </form>
 }

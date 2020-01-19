@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Cashflowio.Core.Entities;
 using FluentDateTime;
 
@@ -30,6 +31,17 @@ namespace Cashflowio.Core.Extensions
         {
             var daysToAdd = ((int) day - (int) start.DayOfWeek + 7) % 7;
             return start.AddDays(daysToAdd);
+        }
+
+        public static int GetWeekNumber(this DateTime date)
+        {
+            var cultureInfo = new CultureInfo("en-US");
+            var calendar = cultureInfo.Calendar;
+
+            var calendarWeekRule = cultureInfo.DateTimeFormat.CalendarWeekRule;
+            var firstDayOfWeek = cultureInfo.DateTimeFormat.FirstDayOfWeek;
+
+            return calendar.GetWeekOfYear(date, calendarWeekRule, firstDayOfWeek);
         }
     }
 }

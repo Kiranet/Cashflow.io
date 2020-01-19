@@ -11,6 +11,7 @@ namespace Cashflowio.Core.Entities
     {
         DateTime Date { get; set; }
         public double Amount { get; set; }
+        string Description { get; set; }
     }
 
     internal interface IMoneyOutflow

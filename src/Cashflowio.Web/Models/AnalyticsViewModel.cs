@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cashflowio.Core.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cashflowio.Web.Models
@@ -24,5 +25,6 @@ namespace Cashflowio.Web.Models
         public int Month => Date.Month;
         public int Day => Date.Day;
         public string DayOfWeek => Date.DayOfWeek.ToString();
+        public int Week => Date.GetWeekNumber();
     }
 }

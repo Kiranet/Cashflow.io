@@ -1,14 +1,12 @@
 ﻿@model IEnumerable<CreditPayment>
 @{
-    ViewData["Title"] = "Payment";
-
     var commands = new List<object>
     {
         new {title = "Credit", buttonOption = new {iconCss = "fas fa-credit-card fa-fw", cssClass = "e-success e-credit"}}
     };
 }
 
-<ejs-grid id="Grid" dataSource="@Model"
+<ejs-grid id="Grid" dataSource="@Model" locale="es-MX"
           enableHover="false" height="420" width="auto" allowSelection="false"
           toolbar="@(new List<string> {"Search"})" allowTextWrap="true"
           allowPaging="true" allowSorting="true" allowFiltering="true" load="onload">
@@ -17,9 +15,9 @@
     <e-grid-sortsettings columns="@(new[] {new {field = "Date", direction = "Descending"}})"></e-grid-sortsettings>
     <e-grid-searchsettings fields="@(new[] {"Date", "Concept", "Source", "Destination", "Amount"})"></e-grid-searchsettings>
     <e-grid-columns>
-        <e-grid-column field="@nameof(CreditPayment.Date)" headerText="Date" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(CreditPayment.Description)" headerText="Description" width="200" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(CreditPayment.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+        <e-grid-column field="@nameof(CreditPayment.Date)" headerText="Fecha" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(CreditPayment.Description)" headerText="Descripción" width="200" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(CreditPayment.Amount)" headerText="Cantidad" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
         <e-grid-column commands="@commands" width="100"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>

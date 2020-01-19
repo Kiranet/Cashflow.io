@@ -118,6 +118,16 @@
       "files": [
         "d3.min.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-daterangepicker@3.0.5",
+      "destination": "wwwroot/lib/daterangepicker/",
+      "files": [
+        "daterangepicker.min.css",
+        "moment.min.js",
+        "daterangepicker.min.js"
+      ]
     }
   ]
 }

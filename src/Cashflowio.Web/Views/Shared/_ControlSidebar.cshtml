@@ -3,59 +3,82 @@
         <h5>Tools</h5><hr class="mb-2">
         <div class="mb-1">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a asp-controller="ExchangeRate" asp-action="Index" class="nav-link">
-                        <i class="nav-icon fas fa-money-bill"></i>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-database"></i>
                         <p>
-                            Exchange Rate
+                            Catálogos
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="MoneyAccount" asp-action="Index" class="nav-link">
-                        <i class="nav-icon fas fa-box"></i>
-                        <p>
-                            Money Accounts
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="IncomeSource" asp-action="Index" class="nav-link">
-                        <i class="nav-icon fas fa-arrow-circle-down"></i>
-                        <p>
-                            Income Sources
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="BudgetCategory" asp-action="Index" class="nav-link">
-                        <i class="nav-icon fas fa-hand-holding-usd"></i>
-                        <p>
-                            Budget Categories
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="ExpenseCategory" asp-action="Index" class="nav-link">
-                        <i class="nav-icon fas fa-comment-dollar"></i>
-                        <p>
-                            Expense Categories
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="Concept" asp-action="Index" class="nav-link">
-                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                        <p>
-                            Concepts
-                        </p>
-                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="ExchangeRate" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-money-bill"></i>
+                                <p>
+                                    Tipo de cambio
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="MoneyAccount" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-box"></i>
+                                <p>
+                                    Cuentas de dinero
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="IncomeSource" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-arrow-circle-down"></i>
+                                <p>
+                                    Fuentes de ingreso
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-database"></i>
                         <p>
-                            Legacy
+                            Categorías
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="BudgetCategory" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-hand-holding-usd"></i>
+                                <p>
+                                    Presupuesto
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="ExpenseCategory" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-comment-dollar"></i>
+                                <p>
+                                    Gasto
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Concept" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                <p>
+                                    Conceptos
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-database"></i>
+                        <p>
+                            Legado
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -63,13 +86,13 @@
                         <li class="nav-item">
                             <a asp-controller="RawTransaction" asp-action="Grid" class="nav-link">
                                 <i class="fas fa-table nav-icon"></i>
-                                <p>Grid</p>
+                                <p>Tabla</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a asp-controller="RawTransaction" asp-action="Pivot" class="nav-link">
                                 <i class="fas fa-th nav-icon"></i>
-                                <p>Pivot</p>
+                                <p>Pivote</p>
                             </a>
                         </li>
                     </ul>

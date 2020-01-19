@@ -14,14 +14,14 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Grid()
         {
-            ViewData["Title"] = nameof(Grid);
+            ViewData["Title"] = "Tabla";
             var isUpdateNeeded = Request.Query.Count > 0;
             return View(_service.QueryAll(isUpdateNeeded));
         }
 
         public IActionResult Pivot()
         {
-            ViewData["Title"] = nameof(Pivot);
+            ViewData["Title"] = "Pivote";
             var isUpdateNeeded = Request.Query.Count > 0;
             return View(_service.QueryAll(isUpdateNeeded));
         }

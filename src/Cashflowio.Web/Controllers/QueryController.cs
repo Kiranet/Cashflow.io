@@ -19,6 +19,8 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Transfer(int year)
         {
+            ViewData["Title"] = "Movimientos";
+            
             foreach (var transfer in GetTransfersFromRawTransactions())
             {
                 var newTransfer = _repository.Add(transfer);
@@ -113,6 +115,8 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Income(int year)
         {
+            ViewData["Title"] = "Ingresos";
+            
             foreach (var income in GetIncomeFromRawTransactions())
             {
                 var newIncome = _repository.Add(income);
@@ -134,6 +138,8 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Expense(int year)
         {
+            ViewData["Title"] = "Gastos";
+            
             foreach (var expense in GetExpenseFromRawTransactions())
             {
                 var newExpense = _repository.Add(expense);
@@ -221,6 +227,8 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Credit(int id, int year)
         {
+            ViewData["Title"] = "Cargos a crédito";
+            
             foreach (var creditCharge in GetCreditChargesFromRawTransactions())
             {
                 var newCreditCharge = _repository.Add(creditCharge);
@@ -272,6 +280,8 @@ namespace Cashflowio.Web.Controllers
 
         public IActionResult Payment(int id, int year)
         {
+            ViewData["Title"] = "Pagos a crédito";
+            
             foreach (var creditPayment in GetCreditPaymentsFromRawTransactions())
             {
                 creditPayment.Id = 0;

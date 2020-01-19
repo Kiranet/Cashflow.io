@@ -3,10 +3,10 @@
 <div class="control-section" style="overflow:auto">
     <div class="content-wrapper">
         <ejs-pivotview id="pivotview" enginePopulated="onGridEnginePopulate"
-                       width="99%" height="600" locale="en">
+                       width="99%" height="600" locale="es-MX">
             <e-gridSettings columnWidth="140"></e-gridSettings>
         </ejs-pivotview>
-        <ejs-pivotfieldlist id="pivotfieldlist" renderMode="Fixed"
+        <ejs-pivotfieldlist id="pivotfieldlist" renderMode="Fixed" locale="es-MX"
                             load="onLoad" enginePopulated="onFieldListEnginePopulate" dataBound="onDataBound" allowCalculatedField="true" locale="en">
             <e-datasourcesettings dataSource="@Model" expandAll="false" enableSorting="true" allowLabelFilter="true" allowValueFilter="true">
                 <e-fieldlist-formatsettings>
@@ -41,7 +41,7 @@
     <form class="float-right">
         <input type="hidden" name="@value" value="@value">
         <button class="btn btn-primary" type="submit">
-            <i class="fas fa-sync"></i> Sync
+            <i class="fas fa-sync"></i> Sincronizar
         </button>
     </form>
 }

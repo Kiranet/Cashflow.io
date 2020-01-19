@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<Income>
 @{
-    ViewData["Title"] = "Income";
-
     var source = Context.Request.Query["source"].ToString();
     var description = Context.Request.Query["description"].ToString();
 
@@ -18,7 +16,7 @@
     }
 }
 
-<ejs-grid id="Grid" dataSource="@Model"
+<ejs-grid id="Grid" dataSource="@Model" locale="es-MX"
           enableHover="false" height="420" width="auto" allowSelection="false"
           toolbar="@(new List<string> {"Search"})" allowTextWrap="true"
           allowPaging="true" allowSorting="true" allowFiltering="true" load="onload">
@@ -27,11 +25,11 @@
     <e-grid-sortsettings columns="@(new[] {new {field = "Date", direction = "Ascending"}})"></e-grid-sortsettings>
     <e-grid-searchsettings fields="@(new[] {"Date", "Type", "Source", "Destination", "Tag", "Note", "Amount"})"></e-grid-searchsettings>
     <e-grid-columns>
-        <e-grid-column field="@nameof(Income.Date)" headerText="Date" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="Source.Name" headerText="Source" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="Destination.Name" headerText="Destination" width="100" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(Income.Description)" headerText="Description" width="200" textAlign="Center"></e-grid-column>
-        <e-grid-column field="@nameof(Income.Amount)" headerText="Amount" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
+        <e-grid-column field="@nameof(Income.Date)" headerText="Fecha" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Source.Name" headerText="Origen" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Destination.Name" headerText="Destino" width="100" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(Income.Description)" headerText="Descripción" width="200" textAlign="Center"></e-grid-column>
+        <e-grid-column field="@nameof(Income.Amount)" headerText="Cantidad" width="100" type="number" format="c0" textAlign="Right"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
 

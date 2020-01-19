@@ -8,8 +8,8 @@ namespace Cashflowio.Core.SharedKernel
     // source: https://github.com/jhewlett/ValueObject
     public abstract class ValueObject : IEquatable<ValueObject>
     {
-        private List<FieldInfo> fields;
-        private List<PropertyInfo> properties;
+        private List<FieldInfo> _fields;
+        private List<PropertyInfo> _properties;
 
         public bool Equals(ValueObject obj)
         {
@@ -52,8 +52,8 @@ namespace Cashflowio.Core.SharedKernel
 
         private IEnumerable<PropertyInfo> GetProperties()
         {
-            if (properties == null)
-                properties = GetType()
+            if (_properties == null)
+                _properties = GetType()
                     .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                     .Where(p => p.GetCustomAttribute(typeof(IgnoreMemberAttribute)) == null)
                     .ToList();
@@ -61,17 +61,17 @@ namespace Cashflowio.Core.SharedKernel
             // Not available in Core
             // !Attribute.IsDefined(p, typeof(IgnoreMemberAttribute))).ToList();
 
-            return properties;
+            return _properties;
         }
 
         private IEnumerable<FieldInfo> GetFields()
         {
-            if (fields == null)
-                fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public)
+            if (_fields == null)
+                _fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public)
                     .Where(p => p.GetCustomAttribute(typeof(IgnoreMemberAttribute)) == null)
                     .ToList();
 
-            return fields;
+            return _fields;
         }
 
         public override int GetHashCode()
