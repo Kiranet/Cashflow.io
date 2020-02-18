@@ -33,7 +33,7 @@ namespace Cashflowio.Infrastructure.Data
                     Amount = workSheet.GetDouble(i, CoinkeeperColumn.Amount),
                     Currency = workSheet.GetString(i, CoinkeeperColumn.Currency),
                     Note = workSheet.GetString(i, CoinkeeperColumn.Note)
-                }.Normalized());
+                });
 
             return transactions;
         }

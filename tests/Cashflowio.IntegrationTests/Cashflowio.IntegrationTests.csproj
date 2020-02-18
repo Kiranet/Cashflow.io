@@ -54,10 +54,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\CoinKeeper.xlsx" />
     <None Remove="Assets\CoinKeeper.xlsx" />
-    <Content Include="Assets\CoinKeeper.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

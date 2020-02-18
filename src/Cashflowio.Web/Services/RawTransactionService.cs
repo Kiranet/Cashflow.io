@@ -35,6 +35,8 @@ namespace Cashflowio.Web.Services
             isUpdateNeeded = newTransactions.All(x => x.Date > lastSavedDate);
             if (!isUpdateNeeded) return transactions;
 
+            newTransactions.ForEach(x => x.Normalized());
+
             _repository.AddRange(newTransactions);
             return _repository.List<RawTransaction>();
         }
